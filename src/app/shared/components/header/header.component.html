@@ -1,0 +1,19 @@
+<div class="card">
+  <p-toolbar
+    styleClass="shadow-2 bg-title flex-column md:flex-row justify-content-between align-items-center p-3 gap-3">
+    <ng-template pTemplate="start">
+      <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" />
+    </ng-template>
+
+    <ng-template pTemplate="center">
+      <span class="font-bold">
+        Usuario: {{ nameAcount }} <i class="pi pi-user"></i>
+      </span>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+      <p-button icon="pi pi-sign-out" (onClick)="logout()" iconPos="right" label="Cerrar sesión"
+        styleClass="p-button-secondary btn-custom-color" [text]="true"></p-button>
+    </ng-template>
+  </p-toolbar>
+</div>

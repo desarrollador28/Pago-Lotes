@@ -1,0 +1,39 @@
+<div class="grid">
+    <!-- ID cliente -->
+    <div class="col-12 md:col mb-4 mt-4 md:mt-0">
+        <div class="text-center ">
+            <p-floatLabel>
+                <!-- //TODO: checar ancho en responsive -->
+                <p-inputNumber inputId="idCliente" mode="decimal" [min]="0" [useGrouping]="false" class="w-full" />
+                <label for="idCliente">ID Cliente</label>
+            </p-floatLabel>
+        </div>
+    </div>
+
+    <!-- Resultado cliente -->
+    <!-- TODO: desactivar desde formulario reactivo -->
+    <div class="col-12 md:col mb-4">
+        <div class="text-center">
+            <p-floatLabel>
+                <input pInputText id="resultCliente" class="w-full md:w-25rem" />
+                <label for="resultCliente">Cliente</label>
+            </p-floatLabel>
+        </div>
+    </div>
+
+    <!-- Boton buscar -->
+    <div class="col-12 md:col mb-4">
+        <div class="text-center ">
+            <!-- <p-button icon="pi pi-search" [rounded]="true" /> -->
+            <pago-lotes-dialog [tableData]="searchTable"></pago-lotes-dialog>
+        </div>
+    </div>
+
+    <!-- Obtener facturas -->
+    <div class="col-12 md:col">
+        <div class="text-center">
+            <pago-lotes-dialog [tableData]="facturas"></pago-lotes-dialog>
+            <!-- <p-button label="Facturas" /> -->
+        </div>
+    </div>
+</div>

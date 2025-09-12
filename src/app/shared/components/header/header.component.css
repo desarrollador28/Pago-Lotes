@@ -1,0 +1,8 @@
+:host ::ng-deep .p-toolbar.bg-title {
+    background-color: #D32F2F;
+    color: white;
+}
+
+:host ::ng-deep .p-button.btn-custom-color {
+    color: white;
+}

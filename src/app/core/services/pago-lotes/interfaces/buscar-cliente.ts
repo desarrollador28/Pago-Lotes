@@ -1,0 +1,75 @@
+interface Status {
+  isSuccess: boolean;
+  statusCode: number;
+  message: string;
+}
+
+interface ApiResponseArray<T> {
+  status: Status;
+  payload: T[];
+}
+
+interface ApiResponseObject<T> {
+  status: Status;
+  payload: T;
+}
+
+interface Cuenta {
+  idCuenta: number;
+  numeroCuenta: string;
+}
+
+interface PayloadBancos {
+  idBanco: number;
+  nombre: string;
+  cuentas: Cuenta[];
+}
+
+interface PayloadClientes {
+  idCliente: number;
+  nombre: string;
+}
+
+export interface Params {
+  searchTerm: string;
+  pageSize: number;
+  pageNumber: number;
+  totalCount?: number;
+  currentPage?: number;
+
+}
+
+export interface StateOptions {
+  label: string;
+  value: string;
+}
+
+
+export interface PayloadIngresos {
+  idIngreso:  number;
+  importe:    number;
+  fecha:      Date;
+  referencia: string;
+  saldo:      number;
+}
+
+export interface ParamsIngresos {
+  idCliente: number | null;
+  idCuentaBancaria: number;
+  dateMin?: string;
+  dateMax?: string;
+}
+
+export interface PayloadProveedores {
+  provId: number;
+  nombre: string;
+}
+
+
+export type Bancos = ApiResponseArray<PayloadBancos>;
+export type Clientes = ApiResponseArray<PayloadClientes>;
+export type Cliente = ApiResponseObject<PayloadClientes>;
+export type Proveedores =ApiResponseArray<PayloadProveedores>
+export type Ingresos = ApiResponseArray<PayloadIngresos>
+export type Proveedor =ApiResponseObject<PayloadProveedores>
+export type Pagination = Omit<Params, 'searchTerm'>

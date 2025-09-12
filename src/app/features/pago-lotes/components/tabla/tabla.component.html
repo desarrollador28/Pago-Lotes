@@ -1,0 +1,42 @@
+<div class="card" *ngIf="ingresosFilter">
+  <p-table [columns]="cols" [value]="ingresosFilter.payload" [(selection)]="ingresosSelected" [scrollable]="true"
+    scrollHeight="400px" [loading]="loading" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          <span *ngIf="col.pipe === 'currency'">
+            {{ rowData[col.field] | currency:'USD' }}
+          </span>
+
+          <span *ngIf="col.pipe === 'date'">
+            {{ rowData[col.field].toString() | date:'yyyy/MM/dd' }}
+          </span>
+          <span *ngIf="!col.pipe">
+            {{ rowData[col.field] }}
+          </span>
+
+          <!-- Ingresos -->
+          <p-tableRadioButton *ngIf="col.field == 'acciones'" [value]="rowData"
+          (click)="selectIngreso()"
+          />
+
+          <!-- Cuenta corriente -->
+          <!-- <p-tableCheckbox *ngIf="col.field == 'acciones'" [value]="rowData" /> -->
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td colspan="4" class="text-right">Total de ingresos</td>
+        <td>{{ total | currency: 'USD'}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

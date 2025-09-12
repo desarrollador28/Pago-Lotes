@@ -1,0 +1,105 @@
+<form [formGroup]="formCliente">
+
+  <div class="formgrid grid mb-3" [ngClass]="isMobile ? 'p-fluid' : ''">
+    <!-- Select Cliente/Proveedor -->
+    <div class="field col-12 md:col-4">
+      <p-selectButton [options]="stateOptions" formControlName="tipoProveedorCliente"
+        (onOptionClick)="selectedTipoCliente($event)" optionLabel="label" optionValue="value" />
+      <small class="p-error" *ngIf="isValidField('tipoProveedorCliente')">
+        {{ getFieldError('tipoProveedorCliente') }}
+      </small>
+    </div>
+
+    <!-- ID Cliente -->
+    <div class="field col-12 mt-4 md:col-3 md:mr-8 md:mt-0">
+      <p-inputGroup>
+        <input type="text" pInputText formControlName="idProveedorCliente"
+          [placeholder]="placeHolderBtnClienteProveedor" />
+        <button type="button" pButton icon="pi pi-search" (click)="onSearchClienteOrProveedor()"></button>
+      </p-inputGroup>
+      <small class="p-error" *ngIf="isValidField('idProveedorCliente')">{{ getFieldError('idProveedorCliente')}}</small>
+    </div>
+
+    <!-- ID Ingreso -->
+    <div class="field col-12 mt-4 md:col-3 md:ml-8 md:mt-0">
+      <p-inputGroup>
+        <input type="text" pInputText formControlName="idIngreso" placeholder="Ingresar ID Ingreso" />
+        <button type="button" pButton icon="pi pi-search"></button>
+      </p-inputGroup>
+    </div>
+  </div>
+
+
+  <div class="p-fluid">
+    <!-- Fila: Cliente / Proveedor, Cuenta, etc -->
+    <div class="formgrid grid mb-3 mt-4">
+      <!-- Dropdown cliente o proveedor -->
+      <div class="field col-12 md:col-4 mt-2">
+        <p-floatLabel>
+          <p-dropdown [options]="dropdownClienteProveedor?.payload" optionLabel="nombre" [filter]="true"
+            filterBy="nombre" [showClear]="true" [placeholder]="lblDropdownClienteProveedor"
+            (onFilter)="filterApi($event)" [loading]="loadingDropdownClienteProveedor"
+            (onChange)="onChangeDropdownClienteProveedor($event)" [emptyFilterMessage]="'Sin resultados'"
+            [emptyMessage]="'Sin resultados'" [resetFilterOnHide]="true" formControlName="listProveedorCliente"
+            inputId="listProveedorCliente" />
+          <label for="dropdownClienteProveedor" class="text-sm">{{lblDropdownClienteProveedor}}</label>
+        </p-floatLabel>
+        <small class="p-error" *ngIf="isValidField('listProveedorCliente')">{{ getFieldError('listProveedorCliente')
+          }}</small>
+      </div>
+
+      <!-- Ingreso / Cuenta corriente -->
+      <div class="field col-12 md:col-4 mt-4 md:mt-2">
+        <p-floatLabel>
+          <p-dropdown [options]="ingresoCuentaCorriente" formControlName="ingresoCuentaCorriente" optionLabel="label"
+            [showClear]="true" placeholder="Ingreso / Cuenta Corriente" (onChange)="eventIngresoCuentaCorriente($event)"
+            inputId="dropdownIngresoCuenta" />
+          <label for="dropdownIngresoCuenta" class="text-sm">Ingreso / Cuenta Corriente</label>
+        </p-floatLabel>
+        <small class="p-error" *ngIf="isValidField('ingresoCuentaCorriente')">{{
+          getFieldError('ingresoCuentaCorriente')}}</small>
+      </div>
+
+      <!-- Bancos y cuentas -->
+      <div class="field col-12 md:col-4 mt-4 md:mt-2">
+        <p-floatLabel>
+          <p-dropdown [options]="dropdownBancos" [group]="true" [filter]="true" filterBy="label,banco"
+            [emptyFilterMessage]="'Sin resultados'" [emptyMessage]="'Sin resultados'" [resetFilterOnHide]="true"
+            [showClear]="true" formControlName="bancos">
+          </p-dropdown>
+          <label for="dropdownCuenta" class="text-sm">Seleccionar cuenta</label>
+        </p-floatLabel>
+        <small class="p-error" *ngIf="isValidField('bancos')">{{ getFieldError('bancos') }}</small>
+      </div>
+    </div>
+
+    <!-- Fila de Fechas e ID's -->
+    <div class="formgrid grid mb-3">
+      <!-- Fecha inicial -->
+      <div class="field col-12 md:col-6 mt-2">
+        <p-floatLabel>
+          <p-calendar [iconDisplay]="'input'" formControlName="dateMin" dateFormat="yy/mm/dd" appendTo="body"
+            [showIcon]="true" [touchUI]="isMobile" inputId="dateMin" />
+          <label for="dateMin" class="text-sm">Fecha Inicio</label>
+        </p-floatLabel>
+        <small class="p-error" *ngIf="isValidField('dateMin')">{{ getFieldError('dateMin') }}</small>
+      </div>
+
+      <!-- Fecha final -->
+      <div class="field col-12 md:col-6 mt-4 md:mt-2">
+        <p-floatLabel>
+          <p-calendar [iconDisplay]="'input'" formControlName="dateMax" dateFormat="yy/mm/dd" appendTo="body"
+            [showIcon]="true" [touchUI]="isMobile" inputId="dateMaxal" />
+          <label for="dateMaxal" class="text-sm">Fecha Final</label>
+        </p-floatLabel>
+        <small class="p-error" *ngIf="isValidField('dateMax')">{{ getFieldError('dateMax') }}</small>
+      </div>
+    </div>
+
+    <!-- Botón de búsqueda -->
+    <div class="flex justify-content-end mb-8">
+      <p-button type="button" [disabled]="this.formCliente.invalid" (click)="onSearchIngresos()" label="Buscar"
+        icon="pi pi-search" [loading]="false" class="w-full md:w-auto" />
+    </div>
+  </div>
+</form>
