@@ -2,7 +2,8 @@ import {
   INPUTNUMBER_VALUE_ACCESSOR,
   InputNumber,
   InputNumberModule
-} from "./chunk-ACBOUVBM.js";
+} from "./chunk-4LTL5BC7.js";
+import "./chunk-GRXB4V2W.js";
 import "./chunk-FQPXI2UO.js";
 import "./chunk-QAGVB2AH.js";
 import "./chunk-JXAA5YWA.js";
@@ -10,7 +11,6 @@ import "./chunk-XVOBSC5V.js";
 import "./chunk-QKQFQIQP.js";
 import "./chunk-BHRKT4ZA.js";
 import "./chunk-BUGEQH7Q.js";
-import "./chunk-GRXB4V2W.js";
 import "./chunk-NIJGFSDX.js";
 import "./chunk-P2DWM4GA.js";
 import "./chunk-2QABQZXT.js";

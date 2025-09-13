@@ -1,4 +1,8 @@
 import {
+  InputText,
+  InputTextModule
+} from "./chunk-GRXB4V2W.js";
+import {
   TimesIcon
 } from "./chunk-FQPXI2UO.js";
 import {
@@ -15,10 +19,6 @@ import {
 import {
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
-import {
-  InputText,
-  InputTextModule
-} from "./chunk-GRXB4V2W.js";
 import {
   PrimeNGConfig,
   PrimeTemplate,
@@ -2254,4 +2254,4 @@ export {
   InputNumber,
   InputNumberModule
 };
-//# sourceMappingURL=chunk-ACBOUVBM.js.map
+//# sourceMappingURL=chunk-4LTL5BC7.js.map

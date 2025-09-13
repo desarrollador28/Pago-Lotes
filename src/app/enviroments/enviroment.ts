@@ -8,5 +8,17 @@ export const enviroment = {
   subscriptionKey: 'aceb1e916c6a47059cfdef2cccebbd67',
 
   //PRODUCCIÓN
+  
 
 }
+
+  //Firebase
+  export const firebaseConfig = {
+    apiKey: "AIzaSyAnQ1NBpcMnDohT8WpKPvEbl6w4gQkauKA",
+    authDomain: "pago-lotes.firebaseapp.com",
+    projectId: "pago-lotes",
+    storageBucket: "pago-lotes.firebasestorage.app",
+    messagingSenderId: "687404274959",
+    appId: "1:687404274959:web:8f44f4b019dc82a42e9a7a",
+    measurementId: "G-8ZD60Z6T9C"
+  }
