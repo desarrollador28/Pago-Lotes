@@ -8,14 +8,14 @@
     "source": "dataconnect"
   },
   "hosting": {
-    "public": "dist/pago-lotes",
+    "public": "dist/pago-lotes/browser",
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
       }
     ],
-    "site": "pago-lotes-47824",
+    "site": "pagolotes-44885",
     "ignore": [
       "firebase.json",
       "**/.*",

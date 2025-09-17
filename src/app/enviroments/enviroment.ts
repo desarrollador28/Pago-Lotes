@@ -7,13 +7,8 @@ export const enviroment = {
   baseUrl: 'https://dlt-qa-apimanagement.azure-api.net/dltfin-qa-facturasporloteapi/api',
   subscriptionKey: 'aceb1e916c6a47059cfdef2cccebbd67',
 
-  //PRODUCCIÓN
-  
-
-}
-
-  //Firebase
-  export const firebaseConfig = {
+  //Firebase config
+  firebaseConfig: {
     apiKey: "AIzaSyAnQ1NBpcMnDohT8WpKPvEbl6w4gQkauKA",
     authDomain: "pago-lotes.firebaseapp.com",
     projectId: "pago-lotes",
@@ -22,3 +17,7 @@ export const enviroment = {
     appId: "1:687404274959:web:8f44f4b019dc82a42e9a7a",
     measurementId: "G-8ZD60Z6T9C"
   }
+  //PRODUCCIÓN
+  
+
+}
