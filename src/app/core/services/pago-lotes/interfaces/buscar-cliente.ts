@@ -25,7 +25,7 @@ interface PayloadBancos {
   cuentas: Cuenta[];
 }
 
-interface PayloadClientes {
+export interface PayloadClientes {
   idCliente: number;
   nombre: string;
 }

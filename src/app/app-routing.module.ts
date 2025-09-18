@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'pago-lotes',
     loadChildren: () => import('./features/pago-lotes/pago-lotes.module').then(m => m.PagoLotesModule),
-    // canLoad: [AuthGuard]
+    canLoad: [AuthGuard]
     // canActivate: [AuthGuard]
   },
   {

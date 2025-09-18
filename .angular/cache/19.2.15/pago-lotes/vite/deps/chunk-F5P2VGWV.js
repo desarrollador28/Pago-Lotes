@@ -5,21 +5,21 @@ import {
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
 import {
-  PrimeTemplate,
-  SharedModule
-} from "./chunk-YP3ZOBBB.js";
-import {
   CommonModule,
   NgClass,
   NgForOf,
   NgIf,
   NgStyle,
   NgTemplateOutlet
-} from "./chunk-EWCK6T2S.js";
+} from "./chunk-OQT7RFTJ.js";
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-G6LDYIDB.js";
+} from "./chunk-BF2STKYA.js";
+import {
+  PrimeTemplate,
+  SharedModule
+} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -1568,4 +1568,4 @@ export {
   Scroller,
   ScrollerModule
 };
-//# sourceMappingURL=chunk-3UMMMDZ3.js.map
+//# sourceMappingURL=chunk-F5P2VGWV.js.map

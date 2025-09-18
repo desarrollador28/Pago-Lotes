@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { ViewportService } from '../../../../core/services/viewport.service';
 import { getValidationMessage, isInvalidField, resetFieldsForm, toggleFields, toggleValidators } from '../../../../shared/helpers/form.helpers';
 import { BuscarClienteProveedorService } from '../../../../core/services/pago-lotes/buscar-cliente.service';
-import { Clientes, Params, StateOptions, Proveedores, ParamsIngresos, Ingresos, Pagination } from '../../../../core/services/pago-lotes/interfaces/buscar-cliente';
+import { Clientes, Params, StateOptions, Proveedores, ParamsIngresos, Ingresos, Pagination, PayloadProveedores, PayloadClientes } from '../../../../core/services/pago-lotes/interfaces/buscar-cliente';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -61,7 +61,7 @@ export class BuscarClienteProveedorPageComponent {
   };
 
   private fieldsForm: string[] = [
-    'tipoCliente',
+    'tipoProveedorCliente',
     'proveedorCliente',
     'ingresoCuentaCorriente',
     'bancos',
@@ -112,7 +112,7 @@ export class BuscarClienteProveedorPageComponent {
     this.lblDropdownClienteProveedor = tipoCliente === '1' ? 'Seleccionar Proveedor' : 'Seleccionar Cliente';
     this.placeHolderBtnClienteProveedor = tipoCliente === '1' ? 'Ingresar ID Proveedor' : 'Ingresar ID Cliente';
     this.queryParams.searchTerm = '';
-    const fieldsReset: string[] = this.fieldsForm.filter(field => field !== 'tipoCliente');
+    const fieldsReset: string[] = this.fieldsForm.filter(field => field !== 'tipoProveedorCliente');
     resetFieldsForm(this.formCliente, fieldsReset);
     if (tipoCliente !== '1') {
       this.isCliente = true;
@@ -251,11 +251,21 @@ export class BuscarClienteProveedorPageComponent {
         const {
           payload: clienteOrProveedorById
         } = response;
-        const controlDropdownClienteProveedor = this.formCliente.get('proveedorCliente');
+        const controlDropdownClienteProveedor = this.formCliente.get('listProveedorCliente');
 
-        if (!controlDropdownClienteProveedor) return;
+        if (!this.isCliente) {
+          const proveedorFind = clienteOrProveedorById as PayloadProveedores;
+          const existId = (this.dropdownClienteProveedor as Proveedores)?.payload.some(p => p.provId === proveedorFind.provId);
+          if (!existId) (this.dropdownClienteProveedor as Proveedores)?.payload.push(proveedorFind);
 
-        controlDropdownClienteProveedor.setValue(clienteOrProveedorById);
+        } else {
+          const clientFind = clienteOrProveedorById as PayloadClientes;
+          const existId = (this.dropdownClienteProveedor as Clientes)?.payload.some(p => p.idCliente === clientFind.idCliente);
+          if (!existId) (this.dropdownClienteProveedor as Clientes)?.payload.push(clientFind);
+        }
+
+
+        controlDropdownClienteProveedor!.setValue(clienteOrProveedorById);
       },
       complete: () => {
         this.loadingDropdownClienteProveedor = false;
@@ -263,7 +273,9 @@ export class BuscarClienteProveedorPageComponent {
       error: (err) => {
         this.loadingDropdownClienteProveedor = false;
         if (err.status === 404) {
+          const controlDropdownClienteProveedor = this.formCliente.get('listProveedorCliente');
           const text = this.isCliente ? 'Cliente no encontrado' : 'Proveedor no encontrado';
+          controlDropdownClienteProveedor!.reset();
           Swal.fire({
             icon: "error",
             title: 'Busqueda por ID',
@@ -316,7 +328,7 @@ export class BuscarClienteProveedorPageComponent {
   //Buscar por id cliente/proveedor
   onSearchClienteOrProveedor(): void {
     const controlIdProveedorCliente = this.formCliente.get('idProveedorCliente');
-    const controlTipoCliente = this.formCliente.get('tipoCliente');
+    const controlTipoCliente = this.formCliente.get('tipoProveedorCliente');
 
     if (!controlIdProveedorCliente || !controlTipoCliente) return;
 

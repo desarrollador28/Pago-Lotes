@@ -60,7 +60,6 @@ export class TablaComponent implements OnChanges {
             pagination
           } = response;
           this.pagination = pagination;
-          console.log(this.pagination);
           this.ingresosFilter = data;
           this.calculateSaldo();
         },
