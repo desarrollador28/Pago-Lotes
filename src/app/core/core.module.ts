@@ -5,6 +5,8 @@ import { enviroment } from '../enviroments/enviroment';
 import { ViewportService } from './services/viewport.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BuscarClienteHeaderInterceptor } from './services/pago-lotes/interceptors/buscar-cliente.interceptor';
+import { BuscarClienteProveedorService } from './services/pago-lotes/buscar-cliente.service';
+import { FacturasService } from './services/pago-lotes/facturas.service';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -40,6 +42,8 @@ export function initializeMsal(msalService: MsalService) {
       multi: true
     },
     ViewportService,
+    BuscarClienteProveedorService,
+    FacturasService
   ]
 })
 export class CoreModule {

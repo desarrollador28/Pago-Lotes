@@ -1,4 +1,9 @@
-import "./chunk-A2EL23EP.js";
+import "./chunk-NDCU4QXK.js";
+import {
+  PrimeTemplate,
+  SharedModule,
+  UniqueComponentId
+} from "./chunk-YP3ZOBBB.js";
 import {
   animate,
   state,
@@ -12,13 +17,8 @@ import {
   NgForOf,
   NgIf,
   NgTemplateOutlet
-} from "./chunk-OQT7RFTJ.js";
-import "./chunk-BF2STKYA.js";
-import {
-  PrimeTemplate,
-  SharedModule,
-  UniqueComponentId
-} from "./chunk-YP3ZOBBB.js";
+} from "./chunk-EWCK6T2S.js";
+import "./chunk-G6LDYIDB.js";
 import {
   ChangeDetectionStrategy,
   Component,

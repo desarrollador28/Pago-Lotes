@@ -9,8 +9,9 @@ import Swal from 'sweetalert2';
 import { ViewportService } from '../../../../core/services/viewport.service';
 import { getValidationMessage, isInvalidField, resetFieldsForm, toggleFields, toggleValidators } from '../../../../shared/helpers/form.helpers';
 import { BuscarClienteProveedorService } from '../../../../core/services/pago-lotes/buscar-cliente.service';
-import { Clientes, Params, StateOptions, Proveedores, ParamsIngresos, Ingresos, Pagination, PayloadProveedores, PayloadClientes } from '../../../../core/services/pago-lotes/interfaces/buscar-cliente';
+import { Clientes, Params, StateOptions, Proveedores, ParamsIngresos, Ingresos, Pagination, PayloadProveedores, PayloadClientes } from '../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { DatePipe } from '@angular/common';
+import { SessionService } from '../../../../core/services/pago-lotes/session.service';
 
 @Component({
   selector: 'pago-lotes-buscar-cliente-proveedor',
@@ -28,6 +29,7 @@ export class BuscarClienteProveedorPageComponent {
 
   public dropdownClienteProveedor: Clientes | Proveedores | undefined;
   public formCliente!: FormGroup;
+  private regexpDigito: RegExp = /\d+/;
   public isMobile: boolean = false;
   public lblDropdownClienteProveedor: string = 'Seleccionar una opción';
   public placeHolderBtnClienteProveedor: string = 'Ingresar ID'
@@ -72,13 +74,18 @@ export class BuscarClienteProveedorPageComponent {
   ];
 
   public ingresosParams: ParamsIngresos = {
-    idCliente: 0,
-    idCuentaBancaria: 0,
+    idCliente: null,
+    idCuentaBancaria: null,
+    idProveedor: null
   };
 
 
-  constructor(private viewPortService: ViewportService, private fb: FormBuilder,
-    private buscarClienteService: BuscarClienteProveedorService) { }
+  constructor(
+    private fb: FormBuilder,
+    private viewPortService: ViewportService,
+    private buscarClienteService: BuscarClienteProveedorService,
+    private sessionService: SessionService
+  ) { }
 
   ngOnInit() {
     this.filterApi$();
@@ -89,8 +96,8 @@ export class BuscarClienteProveedorPageComponent {
       bancos: ['', [Validators.required]],
       dateMin: ['', []],
       dateMax: ['', []],
-      idIngreso: [null, [Validators.pattern(/\d+/)]],
-      idProveedorCliente: [null, [Validators.required, Validators.pattern(/\d+/)]],
+      idIngreso: [null, [Validators.pattern(this.regexpDigito)]],
+      idProveedorCliente: [null, [Validators.required, Validators.pattern(this.regexpDigito)]],
     });
 
     this.viewPortService.viewportWidth$.subscribe(width => {
@@ -361,19 +368,19 @@ export class BuscarClienteProveedorPageComponent {
     }
 
     const formControls = this.formCliente.value;
-
+    const isCuentaCorriente = formControls.ingresoCuentaCorriente;
     const datePipe = new DatePipe('en-US');
     const formattedDateMin = datePipe.transform(formControls.dateMin, 'yyyy/MM/dd') ?? '';
     const formattedDateMax = datePipe.transform(formControls.dateMax, 'yyyy/MM/dd') ?? '';
 
-    this.ingresosParams.idCliente = formControls.listProveedorCliente.idCliente;
-    this.ingresosParams.idCuentaBancaria = formControls.bancos.idCuenta;
     this.ingresosParams.dateMin = formattedDateMin;
     this.ingresosParams.dateMax = formattedDateMax;
+    this.ingresosParams.idCuentaBancaria = isCuentaCorriente.value !== '2' ? formControls.bancos.idCuenta : null;
+    this.ingresosParams.idCliente = !this.isCliente ? null : formControls.listProveedorCliente.idCliente;
+    this.ingresosParams.idProveedor = !this.isCliente ? formControls.listProveedorCliente.provId : null;
 
-    if (!this.isCliente) {
-      this.ingresosParams.idCliente = null;
-    }
+    // sessionStorage.setItem('objectPaso1', JSON.stringify(formControls));
+    this.sessionService.set('objectPaso1', JSON.stringify(formControls));
 
     this.queryParmasIngresos.emit({
       ...this.ingresosParams,

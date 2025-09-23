@@ -1,51 +1,19 @@
-
 <pago-lotes-header></pago-lotes-header>
-<div class="card mt-4">
-  <p-stepper [linear]="true" class="m-8">
-    <!-- Stepper 1: Buscar Cliente ó proveedor -->
-    <p-stepperPanel header="Buscar Cliente">
-      <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-        <pago-lotes-buscar-cliente-proveedor
-        (isValidSearch)="onValidSearchIngresos($event)"
-        (queryParmasIngresos)="eventQueryParamsIngresos($event)"
-        ></pago-lotes-buscar-cliente-proveedor>
 
-        <!-- Tabla de ingresos -->
-        <pago-lotes-tabla *ngIf="isValidFilterIngresos"
-        [queryParamsIngresos]="queryParamsIngresos!"
-        ></pago-lotes-tabla>
+<div class="card justify-content-center mt-4">
+  <p-accordion [activeIndex]="activeIndex">
+    <!-- Paso 1: -->
+    <p-accordionTab header="Paso 1: Buscar Proveedor o Cliente">
+      <pago-lotes-buscar-cliente-proveedor (isValidSearch)="onValidSearchIngresos($event)"
+        (queryParmasIngresos)="eventQueryParamsIngresos($event)"></pago-lotes-buscar-cliente-proveedor>
 
-        <div class="flex pt-4 justify-content-end mt-8">
-          <p-button label="Next" icon="pi pi-arrow-right" [disabled]="isValidFilterIngresos" iconPos="right"
-            (onClick)="nextCallback.emit()" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
+      <pago-lotes-tabla *ngIf="isValidFilterIngresos" [queryParamsIngresos]="queryParamsIngresos!"
+        (eventSelectIngreso)="eventIsValidSelectedIngreso($event)"></pago-lotes-tabla>
+    </p-accordionTab>
 
-    <!-- Stepper 3: Documentos cobranza -->
-    <p-stepperPanel header="Documentos Cobranza">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-        let-index="index">
-        <div class="flex flex-column">
-          <pago-lotes-documentos-cobranza-page></pago-lotes-documentos-cobranza-page>
-        </div>
-        <div class="flex pt-4 justify-content-between">
-          <p-button label="Atrás" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-          <p-button label="Siguiente" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-
-    <!-- Stepper 4: Facturas -->
-    <p-stepperPanel header="Facturas">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-        <div class="flex flex-column">
-          <pago-lotes-facturas></pago-lotes-facturas>
-        </div>
-        <div class="flex pt-4 justify-content-start">
-          <p-button label="Atrás" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-  </p-stepper>
+    <!-- Paso 2: -->
+    <p-accordionTab header="Paso 2: Documentos Cobranza" [disabled]="isValidSelectedIngreso">
+      <pago-lotes-documentos-cobranza-page></pago-lotes-documentos-cobranza-page>
+    </p-accordionTab>
+  </p-accordion>
 </div>

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 import { PagoLotesRoutingModule } from './pago-lotes-routing.module';
 import { StepperComponent } from './components/stepper/stepper.component';
 import { PrimeNGModule } from '../../shared/primeNG/primeNG.module';
 import { BuscarClienteProveedorPageComponent } from './buscar-cliente-proveedor/pages/buscar-cliente-proveedor-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TablaComponent } from './components/tabla/tabla.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentosCobranzaPageComponent } from './documentos-cobranza/page/documentos-cobranza-page.component';
@@ -22,13 +22,15 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     PrimeNGModule,
     PagoLotesRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [
     StepperComponent
-  ]
+  ],
+  providers: [CurrencyPipe]
 
 })
 export class PagoLotesModule { }

@@ -16,6 +16,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [],
@@ -39,6 +40,7 @@ import { ToolbarModule } from 'primeng/toolbar';
     StepperModule,
     TableModule,
     ToolbarModule,
+    AccordionModule
   ]
 })
 export class PrimeNGModule { }

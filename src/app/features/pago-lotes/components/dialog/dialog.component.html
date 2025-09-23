@@ -1,26 +1,57 @@
 <div class="card flex justify-content-center">
-    <p-button (onClick)="showDialog()" [label]="tableData.label" 
-    [rounded]="tableData.roudend"
-    [icon]="tableData.icon"
-    />
-    <p-dialog header="{{ tableData.title}}" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
-        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <p-button (onClick)="showDialog()" [label]="dataDialog.label" [rounded]="dataDialog.roudend"
+    [icon]="dataDialog.icon" />
+  <p-dialog header="{{ dataDialog.title}} : {{ total | currency: 'USD'}}" [modal]="true" [(visible)]="visible" [style]="{ width: '60rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" *ngIf="dataTable?.payload">
 
-        <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
-                    <td *ngFor="let col of columns">
-                        {{ rowData[col.field] }}
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-dialog>
+
+    <p-table [columns]="cols" [value]="dataTable!.payload" [tableStyle]="{ 'min-width': '50rem' }"
+      [loading]="loadingTable" [(selection)]="selectionModel">
+
+      <!-- Acciones table -->
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" placeholder="Buscar" (input)="searchCliente($event)" />
+          </span>
+        </div>
+      </ng-template>
+      <!-- Header columnas -->
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+
+      <!-- Data Columnas -->
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <span *ngIf="col.pipe === 'currency'"> {{ rowData[col.field] | currency:'USD' }} </span>
+            <span *ngIf="!col.pipe"> {{ rowData[col.field] }} </span> 
+            
+            <span>
+              <button *ngIf="col.field == 'acciones' && dataDialog.isCliente" pButton type="button"
+                icon="pi pi-user-plus" class="p-button-text" (click)="selectData(rowData)">
+              </button>
+
+              <p-tableCheckbox *ngIf="col.field == 'acciones' && !dataDialog.isCliente" [value]="rowData"
+                (click)="selectData(rowData)" />
+
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="flex justify-content-end gap-2 mt-3" *ngIf="!dataDialog.isCliente">
+      <p-button severity="success" label="Aplicar" (onClick)="facturasApply()"
+        [disabled]="this.facturasSelected.length === 0 || !isValidFacturas" />
+      <p-button severity="danger" label="Cancelar" (onClick)="cancelar()" />
+    </div>
+
+  </p-dialog>
 </div>

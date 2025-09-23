@@ -28,6 +28,7 @@ interface PayloadBancos {
 export interface PayloadClientes {
   idCliente: number;
   nombre: string;
+  rfc?: string;
 }
 
 export interface Params {
@@ -36,7 +37,7 @@ export interface Params {
   pageNumber: number;
   totalCount?: number;
   currentPage?: number;
-
+  idCliente?: number
 }
 
 export interface StateOptions {
@@ -46,16 +47,17 @@ export interface StateOptions {
 
 
 export interface PayloadIngresos {
-  idIngreso:  number;
-  importe:    number;
-  fecha:      Date;
+  idIngreso: number;
+  importe: number;
+  fecha: Date;
   referencia: string;
-  saldo:      number;
+  saldo: number;
 }
 
 export interface ParamsIngresos {
   idCliente: number | null;
-  idCuentaBancaria: number;
+  idProveedor: number | null;
+  idCuentaBancaria: number | null;
   dateMin?: string;
   dateMax?: string;
 }
@@ -65,11 +67,39 @@ export interface PayloadProveedores {
   nombre: string;
 }
 
+export interface PayloadFactura {
+  idFactura: number;
+  fecha: Date;
+  factura: string;
+  cliente: string;
+  contratoAnexo: string;
+  concepto: string;
+  saldo: number;
+  totalNeto: number;
+}
+
+export interface CreatePaymentBatchRequest {
+  partyType: number;
+  mode: number;
+  entityId: number;
+  idIngreso: number;
+  items: Items[];
+}
+
+export interface Items {
+  facId: number;
+  pagoNetoFac: number;
+}
+
+
+
 
 export type Bancos = ApiResponseArray<PayloadBancos>;
 export type Clientes = ApiResponseArray<PayloadClientes>;
 export type Cliente = ApiResponseObject<PayloadClientes>;
-export type Proveedores =ApiResponseArray<PayloadProveedores>
+export type Proveedores = ApiResponseArray<PayloadProveedores>
 export type Ingresos = ApiResponseArray<PayloadIngresos>
-export type Proveedor =ApiResponseObject<PayloadProveedores>
+export type Proveedor = ApiResponseObject<PayloadProveedores>
 export type Pagination = Omit<Params, 'searchTerm'>
+export type Facturas = ApiResponseArray<PayloadFactura>
+export type Factura = ApiResponseObject<PayloadFactura>

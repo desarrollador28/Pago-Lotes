@@ -1,16 +1,6 @@
 import {
   Router
-} from "./chunk-DLRMQSL4.js";
-import "./chunk-6KQFSJMY.js";
-import "./chunk-3FG3QDQ5.js";
-import "./chunk-NMERKRVQ.js";
-import {
-  CommonModule,
-  Location
-} from "./chunk-OQT7RFTJ.js";
-import {
-  DOCUMENT
-} from "./chunk-BF2STKYA.js";
+} from "./chunk-G3JLHFGP.js";
 import {
   BrowserConfigurationAuthError,
   BrowserUtils_exports,
@@ -23,6 +13,16 @@ import {
   WrapperSKU
 } from "./chunk-ZRGGB2FS.js";
 import "./chunk-IYLW4IO6.js";
+import "./chunk-NTOOWZMU.js";
+import "./chunk-5PWOFJZN.js";
+import "./chunk-2MLSTLPI.js";
+import {
+  CommonModule,
+  Location
+} from "./chunk-EWCK6T2S.js";
+import {
+  DOCUMENT
+} from "./chunk-G6LDYIDB.js";
 import {
   Component,
   Inject,

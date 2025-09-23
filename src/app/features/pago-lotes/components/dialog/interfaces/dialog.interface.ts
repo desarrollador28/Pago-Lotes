@@ -1,12 +1,12 @@
 export interface TableDialog {
-    label: string;
-    icon?: string;
-    roudend: boolean;
-    isSearch: boolean;
-    title: string;
+  label: string;
+  icon?: string;
+  roudend: boolean;
+  title: string;
+  isCliente: boolean;
 }
 
 export interface Column {
-    field: string;
-    header: string;
+  field: string;
+  header: string;
 }

@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { ParamsIngresos } from '../../../../core/services/pago-lotes/interfaces/buscar-cliente';
+import { ParamsIngresos } from '../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 
 @Component({
   selector: 'pago-lotes-stepper',
@@ -10,6 +10,8 @@ import { ParamsIngresos } from '../../../../core/services/pago-lotes/interfaces/
 export class StepperComponent{
   public isValidFilterIngresos: boolean = false;
   public queryParamsIngresos: ParamsIngresos | undefined;
+  public isValidSelectedIngreso: boolean = true;
+  public activeIndex: number = 0;
 
   onValidSearchIngresos(isValid: boolean): void {
     this.isValidFilterIngresos = isValid;
@@ -17,6 +19,11 @@ export class StepperComponent{
 
   eventQueryParamsIngresos(queryParams: ParamsIngresos): void {
     this.queryParamsIngresos = queryParams;
+  }
+
+  eventIsValidSelectedIngreso(event: boolean): void {
+    this.isValidSelectedIngreso = !event;
+    this.activeIndex = 1;
   }
 
 }

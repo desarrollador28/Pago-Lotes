@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../../enviroments/enviroment';
-import { map, Observable } from 'rxjs';
-import { Bancos, Cliente, Clientes, Ingresos, Pagination, Params, ParamsIngresos, Proveedor, Proveedores } from './interfaces/buscar-cliente';
+import { map, Observable, of } from 'rxjs';
+import { Bancos, Cliente, Clientes, Ingresos, Pagination, Params, ParamsIngresos, Proveedor, Proveedores } from './interfaces/pago-lotes.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -49,13 +49,16 @@ export class BuscarClienteProveedorService {
   getAllIngresos(pagination: Pagination, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: Pagination }> {
 
     let queryParamsFilter = new HttpParams()
-      .set('idCuentaBancaria', queryParams.idCuentaBancaria)
       .set('PageNumber', pagination.pageNumber)
       .set('PageSize', pagination.pageSize)
 
 
     if (queryParams.idCliente) {
       queryParamsFilter = queryParamsFilter.set('idCliente', queryParams.idCliente!);
+    }
+
+    if (queryParams.idCuentaBancaria) {
+      queryParamsFilter = queryParamsFilter.set('idCuentaBancaria', queryParams.idCuentaBancaria!);
     }
 
     if (queryParams.dateMax) {
@@ -82,6 +85,48 @@ export class BuscarClienteProveedorService {
         };
       })
     );
+  }
+
+  GetMovimientoCuentaCorrienteById(pagination: Pagination, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: Pagination }> {
+
+    const resource: string = queryParams.idProveedor ? 'proveedores' : 'clientes';
+    const id: number = queryParams.idProveedor ??  queryParams.idCliente!;
+    const url = `${this.baseUrl}/${resource}/${id}/movimientos-cuenta-corriente`;
+
+
+    let queryParamsFilter = new HttpParams()
+      .set('PageNumber', pagination.pageNumber)
+      .set('PageSize', pagination.pageSize)
+
+
+    if (queryParams.dateMax) {
+      queryParamsFilter = queryParamsFilter.set('dateMax', queryParams.dateMax);
+    }
+
+    if (queryParams.dateMin) {
+      queryParamsFilter = queryParamsFilter.set('dateMin', queryParams.dateMin);
+    }
+
+
+    return this.http.get<Ingresos>(url, { observe: 'response', params: queryParamsFilter }).pipe(
+      map(response => {
+        const paginationHeader = response.headers.get('X-Pagination');
+        let pagination = null;
+
+        if (paginationHeader) {
+          pagination = JSON.parse(paginationHeader);
+        }
+
+        return {
+          data: response.body as Ingresos,
+          pagination
+        };
+      })
+    );
+  }
+
+  isCuentaCorriente(isCuentaCorriente: boolean): Observable<boolean> {
+    return of(isCuentaCorriente);
   }
 
 }
