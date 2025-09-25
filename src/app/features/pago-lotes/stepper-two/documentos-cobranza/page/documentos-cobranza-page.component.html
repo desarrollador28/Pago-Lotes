@@ -1,0 +1,49 @@
+<h2 class="mb-4" *ngIf="ingresoBancario">Ingreso bancario: {{ ingresoBancario.saldo | currency:'USD' }}</h2>
+<div class="grid" [formGroup]="formDocumentosCobranza">
+
+  <!-- ID cliente -->
+  <div class="col-12 md:col mb-4 mt-4 md:mt-0">
+    <div class="text-center ">
+      <p-floatLabel>
+        <!-- //TODO: checar ancho en responsive -->
+        <p-inputNumber inputId="idCliente" mode="decimal" formControlName="idCliente" (onInput)="getClienteById($event)"
+          [min]="0" [useGrouping]="false" class="w-full" />
+        <label for="idCliente">ID Cliente</label>
+      </p-floatLabel>
+    </div>
+    <small class="p-error" *ngIf="isValidField('idCliente')">
+      {{ getFieldError('idCliente') }}
+    </small>
+  </div>
+
+  <!-- Resultado cliente -->
+  <!-- TODO: desactivar desde formulario reactivo -->
+  <div class="col-12 md:col mb-4">
+    <div class="text-center">
+      <p-floatLabel>
+        <input pInputText id="nombre" class="w-full md:w-25rem" formControlName="nombre" />
+        <label for="resultCliente">Cliente</label>
+      </p-floatLabel>
+    </div>
+  </div>
+
+  <!-- Boton buscar -->
+  <div class="col-12 md:col mb-4">
+    <div class="text-center ">
+      <!-- <p-button icon="pi pi-search" [rounded]="true" /> -->
+      <pago-lotes-dialog [dataDialog]="clienteTable" (eventCliente)="eventClienteSelected($event)"></pago-lotes-dialog>
+    </div>
+  </div>
+
+  <!-- Obtener facturas -->
+  <div class="col-12 md:col">
+    <div class="text-center">
+      <pago-lotes-dialog [dataDialog]="facturasTable" [idCliente]="idCliente"
+        (facturasEvent)="facturasShowTable($event)"
+        [isValidCliente]="formDocumentosCobranza.invalid"></pago-lotes-dialog>
+      <!-- <p-button label="Facturas" /> -->
+    </div>
+  </div>
+</div>
+
+<tabla-facturas [facturas]="facturas" *ngIf="facturas.length > 0"></tabla-facturas>

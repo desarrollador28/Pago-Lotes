@@ -125,8 +125,4 @@ export class BuscarClienteProveedorService {
     );
   }
 
-  isCuentaCorriente(isCuentaCorriente: boolean): Observable<boolean> {
-    return of(isCuentaCorriente);
-  }
-
 }

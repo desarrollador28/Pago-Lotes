@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../../enviroments/enviroment';
-import { Clientes, Facturas, Pagination, Params, Proveedores } from './interfaces/pago-lotes.interface';
+import { Clientes, CreatePaymentBatchRequest, CreatePaymentBatchResponse, Facturas, GetBatchStatus, Pagination, Params, Proveedores } from './interfaces/pago-lotes.interface';
 import { map, Observable, of } from 'rxjs';
 
 @Injectable({
@@ -41,7 +41,31 @@ export class FacturasService {
     );
   }
 
+  //Aplicar poagos
+  createPaymentBatch(body: CreatePaymentBatchRequest): Observable<{ data: CreatePaymentBatchResponse, location: string | null;}> {
+    return this.http.post<CreatePaymentBatchResponse>(`${this.baseUrl}/payment-batches`, body,{ observe: 'response' }).pipe(
+      map(response => {
+        const localtionHeader = response.headers.get('Location');
+        let location = null;
+
+        if (localtionHeader) {
+          location = localtionHeader;
+        }
+
+        return {
+          data: response.body as CreatePaymentBatchResponse,
+          location
+        };
+      })
+    );
+  }
+
   isFactura(isFactura: boolean): Observable<boolean> {
     return of(isFactura)
+  }
+
+  //Obtener status de los pagos aplicados
+  getBatchStatus(id: number): Observable<GetBatchStatus> {
+    return this.http.get<GetBatchStatus>(`${this.baseUrl}/payment-batches/${id}`);
   }
 }

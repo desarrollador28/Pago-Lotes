@@ -7,9 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CoreModule } from './core/core.module';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { enviroment } from './enviroments/enviroment';
+// import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+// import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+// import { enviroment } from './enviroments/enviroment';
 
 @NgModule({
   declarations: [AppComponent],

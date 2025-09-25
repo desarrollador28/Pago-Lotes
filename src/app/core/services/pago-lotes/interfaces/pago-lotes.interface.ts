@@ -91,6 +91,21 @@ export interface Items {
   pagoNetoFac: number;
 }
 
+export interface CreatePaymentBatchResponse {
+  id:    number;
+  jobId: string;
+  location: string;
+}
+
+export interface PayloadGetBatchStatus {
+  batchId:    number;
+  state:      number;
+  total:      number;
+  succeeded:  number;
+  failed:     number;
+  running:    number;
+  difference: null;
+}
 
 
 
@@ -103,3 +118,4 @@ export type Proveedor = ApiResponseObject<PayloadProveedores>
 export type Pagination = Omit<Params, 'searchTerm'>
 export type Facturas = ApiResponseArray<PayloadFactura>
 export type Factura = ApiResponseObject<PayloadFactura>
+export type GetBatchStatus = ApiResponseObject<PayloadGetBatchStatus>

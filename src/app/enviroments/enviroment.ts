@@ -4,7 +4,7 @@ export const enviroment = {
   inquilino: '2e89cb87-ca09-4799-a739-28cb7350ee6e',
 
   //QA
-  baseUrl: 'https://dlt-qa-apimanagement.azure-api.net/dltfin-qa-facturasporloteapi/api',
+  baseUrl: 'https://dlt-qa-apimanagement.azure-api.net/facturasporloteapi/api',
   subscriptionKey: 'aceb1e916c6a47059cfdef2cccebbd67',
 
   //Firebase config
@@ -18,6 +18,6 @@ export const enviroment = {
     measurementId: "G-8ZD60Z6T9C"
   }
   //PRODUCCIÓN
-  
+
 
 }

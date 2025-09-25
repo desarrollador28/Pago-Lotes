@@ -4,6 +4,7 @@
   <p-accordion [activeIndex]="activeIndex">
     <!-- Paso 1: -->
     <p-accordionTab header="Paso 1: Buscar Proveedor o Cliente">
+
       <pago-lotes-buscar-cliente-proveedor (isValidSearch)="onValidSearchIngresos($event)"
         (queryParmasIngresos)="eventQueryParamsIngresos($event)"></pago-lotes-buscar-cliente-proveedor>
 
