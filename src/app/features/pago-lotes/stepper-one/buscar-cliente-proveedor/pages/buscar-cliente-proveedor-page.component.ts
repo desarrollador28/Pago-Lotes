@@ -28,7 +28,7 @@ export class BuscarClienteProveedorPageComponent {
   private filtro$ = new Subject<string>();
   private isCliente$ = new Subject<boolean>();
 
-  public dropdownClienteProveedor!: Clientes | Proveedores;
+  public dropdownClienteProveedor: Clientes | Proveedores | undefined;
   public formCliente!: FormGroup;
   private regexpDigito: RegExp = /\d+/;
   public isMobile: boolean = false;
