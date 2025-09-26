@@ -40,16 +40,6 @@ export class DocumentosCobranzaPageComponent implements OnInit {
     items: []
   };
   public total: number = 0;
-  public selectFactura: PayloadFactura | null = {
-    idFactura: 0,
-    fecha: new Date(),
-    factura: '',
-    cliente: '',
-    contratoAnexo: '',
-    concepto: '',
-    saldo: 0,
-    totalNeto: 0
-  }
   public queryParams: Params = {
     searchTerm: '',
     pageSize: 10,

@@ -1,10 +1,12 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CreatePaymentBatchRequest, Items, PayloadClientes, PayloadFactura, PayloadIngresos, PayloadProveedores } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { CurrencyPipe } from '@angular/common';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { FacturasService } from '../../../../../core/services/pago-lotes/facturas.service';
-import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
+import { restrictNegativeValues } from '../../../../../shared/helpers/form.helpers';
+import { InputNumberInputEvent } from 'primeng/inputnumber';
 
 
 interface ObjectPaso1 {
@@ -28,10 +30,10 @@ interface IngresoCuentaCorriente {
   styleUrl: './tabla-facturas.component.css'
 })
 export class TablaFacturasComponent implements OnInit, OnChanges {
-
   @Input() facturas: PayloadFactura[] = [];
   public columns: CustomColumn[] = [];
   public total: number = 0;
+  public limiSaldo: number = 0;
   public createPaymentBatchRequest: CreatePaymentBatchRequest = {
     partyType: 0,
     mode: 0,
@@ -49,6 +51,7 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
 
 
   constructor(
+    private currencyPipe: CurrencyPipe,
     private sessionService: SessionService,
     private facturasService: FacturasService
   ) { }
@@ -70,8 +73,11 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Cambio')
     if (changes['facturas']) {
+      this.facturas = this.facturas.map(f => ({
+        ...f,
+        saldoOriginal: f.saldo,
+      }));
       this.calculateTotal();
     }
   }
@@ -92,15 +98,42 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
     this.calculateTotal();
   }
 
-  updateSaldo() {
+  updateSaldoInput(row: PayloadFactura, event: InputNumberInputEvent): void {
+    const saldo = event.value ?? 0;
+    const index = this.facturas.findIndex(f => f.idFactura === row.idFactura);
+
+    if (index === -1) return;
+
+    if (Number(saldo) <= 0) this.facturas[index].saldo = 0;
+
+    const limit = this.facturas[index].saldoOriginal;
+    if (parseFloat(saldo.toString()) > limit) {
+      this.facturas[index].saldo = limit;
+
+    }
     this.calculateTotal();
   }
+
+  preventNegative(event: KeyboardEvent): void {
+    restrictNegativeValues(event);
+  }
+
 
   //TODO: Consumir API para aplicar pagos
   aplicarPagos(): void {
     const objecPaso1 = this.sessionService.get('objectPaso1');
     const ingresoSelect = this.sessionService.get('ingresoBancarioSelected');
+    const ingresoBancario = JSON.parse(ingresoSelect!);
 
+    const saldoFormat = this.currencyPipe.transform(ingresoBancario.saldo, 'USD', 'symbol', '1.2-2');
+    if (this.total > ingresoBancario.saldo) {
+      Swal.fire({
+        title: `Error en Aplicar Facturas`,
+        icon: "error",
+        text: `El Total de Aplicaciones supera el saldo de: ${saldoFormat}`
+      });
+      return;
+    }
 
     if (!objecPaso1 || !ingresoSelect) return;
 
@@ -122,7 +155,7 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
 
     const items: Items[] = this.facturas.map(i => ({
       facId: i.idFactura,
-      pagoNetoFac: i.totalNeto,
+      pagoNetoFac: i.saldo,
     }));
 
     this.createPaymentBatchRequest.items = items;

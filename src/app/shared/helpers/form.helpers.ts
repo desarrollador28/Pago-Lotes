@@ -150,7 +150,7 @@ export function toggleValidators(
  * @return void
  */
 export function restrictNegativeValues(event: KeyboardEvent): void {
-  if (event.key === '-') {
+  if (event.key === '-' || event.key.toLowerCase() === 'e') {
     event.preventDefault();
   }
 }

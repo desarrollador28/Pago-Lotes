@@ -12,7 +12,7 @@ import { SessionService } from '../../../../../core/services/pago-lotes/session.
   templateUrl: './tabla.component.html',
   styleUrls: ['./tabla.component.css']
 })
-export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
+export class TablaIngresosBancariosComponent implements OnChanges{
   @Input() queryParamsIngresos: ParamsIngresos | undefined;
   @Output() eventSelectIngreso: EventEmitter<boolean> = new EventEmitter<boolean>;
   private isCuentaCorriente$ = new Subject<boolean>();
@@ -33,10 +33,6 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
     private sessionService: SessionService,
   ) { }
 
-  ngOnInit(): void {
-    this.initGetDataTable();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     this.pagination = {
       pageSize: 10,
@@ -54,8 +50,9 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
       { field: 'acciones', header: 'Acciones' },
     ];
 
-    if (!changes['queryParamsIngresos']) return;
+    if (!changes['queryParamsIngresos']) return
     this.ingresoSelectedRadio = null;
+    this.initGetDataTable();
 
     this.queryParamsIngresos?.idCuentaBancaria
       ? this.isCuentaCorriente$.next(false)

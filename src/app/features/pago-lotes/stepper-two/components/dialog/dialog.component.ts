@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TableDialog } from '../../interfaces/dialog.interface';
 import { catchError, debounceTime, finalize, of, Subject, switchMap, tap } from 'rxjs';
-import Swal from 'sweetalert2';
-import { CurrencyPipe } from '@angular/common';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
 import { Cliente, Clientes, Factura, Facturas, Params, PayloadClientes, PayloadFactura } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
@@ -44,7 +42,6 @@ export class DialogComponent implements OnInit {
   }
 
   constructor(
-    private currencyPipe: CurrencyPipe,
     private clienteService: BuscarClienteProveedorService,
     private facturaService: FacturasService,
     private sessionService: SessionService,
@@ -198,6 +195,7 @@ export class DialogComponent implements OnInit {
   cancelar(): void {
     this.visible = false;
     this.facturasSelected = [];
+    this.total = 0;
     this.facturasEvent.emit(this.facturasSelected);
   }
 
@@ -219,25 +217,5 @@ export class DialogComponent implements OnInit {
     }
 
     this.total = total;
-
-    const ingresoSelect: string | null = this.sessionService.get('ingresoBancarioSelected');
-
-    const ingresoBancario = JSON.parse(ingresoSelect!);
-
-    const saldoFormat = this.currencyPipe.transform(ingresoBancario.saldo, 'USD', 'symbol', '1.2-2');
-    if (this.total > ingresoBancario.saldo) {
-      this.isValidFacturas = false;
-      this.visible = false;
-      Swal.fire({
-        title: `Error selección de facturas`,
-        icon: "error",
-        text: `Las facturas seleccionadas superan el saldo: ${saldoFormat}`
-      }).then(() => {
-        this.visible = true;
-      });
-    } else {
-      this.isValidFacturas = true;
-    }
-
   }
 }

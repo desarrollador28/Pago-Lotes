@@ -1,62 +1,62 @@
 <!-- Tabla facturas -->
 <div class="card" *ngIf="facturas.length > 0">
-    <p-table [value]="facturas" [columns]="columns" [tableStyle]="{ 'min-width': '50rem' }" editMode="cell">
+  <p-table [value]="facturas" [columns]="columns" [tableStyle]="{ 'min-width': '50rem' }" editMode="cell">
 
-        <!-- Header -->
-        <ng-template pTemplate="header">
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{ col.header }}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-                <td *ngFor="let col of columns" [pEditableColumn]="rowData[col.field]"
-                    [pEditableColumnField]="col.field">
+    <!-- Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns" [pEditableColumn]="rowData[col.field]" [pEditableColumnField]="col.field">
 
-                    <!-- Solo saldo editable -->
-                    <ng-container *ngIf="col.field === 'saldo'; else normalColumn">
-                        <p-cellEditor>
-                            <!-- Input en edición -->
-                            <ng-template pTemplate="input">
-                                <input pInputText type="number" step="0.01" [(ngModel)]="rowData[col.field]"
-                                    (change)="updateSaldo()" />
-                            </ng-template>
+          <!-- Solo saldo editable -->
+          <ng-container *ngIf="col.field === 'saldo'; else normalColumn">
+            <p-cellEditor>
+              <!-- Input en edición -->
+              <ng-template pTemplate="input">
+                <p-inputNumber [(ngModel)]="rowData[col.field]" mode="decimal" [minFractionDigits]="2"
+                  [maxFractionDigits]="5"  (onKeyDown)="preventNegative($event)" (onInput)="updateSaldoInput(rowData, $event)" [min]="0" [max]="rowData.saldoOriginal"/>
+              </ng-template>
 
-                            <!-- Input lectura -->
-                            <ng-template pTemplate="output">
-                                {{ rowData[col.field] | currency:'USD' }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </ng-container>
+              <!-- Input lectura -->
+              <ng-template pTemplate="output">
+                <p-button class="w-max" [plain]="true" [text]="true"
+                  label="{{ rowData[col.field] | currency:'USD' }}" styleClass="w-full" />
+              </ng-template>
+            </p-cellEditor>
+          </ng-container>
 
-                    <!-- Todas las demás columnas -->
-                    <ng-template #normalColumn>
-                        <span *ngIf="col.pipe === 'currency'"> {{ rowData[col.field] | currency:'USD' }} </span>
-                        <span *ngIf="!col.pipe && col.field !== 'accion'"> {{ rowData[col.field] }} </span>
+          <!-- Todas las demás columnas -->
+          <ng-template #normalColumn>
+            <span *ngIf="col.pipe === 'currency'"> {{ rowData[col.field] | currency:'USD' }} </span>
+            <span *ngIf="!col.pipe && col.field !== 'accion'"> {{ rowData[col.field] }} </span>
 
-                        <!-- Columna acción -->
-                        <span *ngIf="col.field === 'accion'">
-                            <button pButton type="button" icon="pi pi-trash" (click)="deleteFactura(rowData)"
-                                class="p-button-text p-button-danger">
-                            </button>
-                        </span>
-                    </ng-template>
-                </td>
-            </tr>
-        </ng-template>
+            <!-- Columna acción -->
+            <span *ngIf="col.field === 'accion'">
+              <button pButton type="button" icon="pi pi-trash" (click)="deleteFactura(rowData)"
+                class="p-button-text p-button-danger">
+              </button>
+            </span>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
 
-        <!-- Footer -->
-        <ng-template pTemplate="footer">
-            <tr>
-                <td colspan="4" class="text-right">Total de Aplicaciones</td>
-                <td>{{ total | currency:'USD' }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <!-- Footer -->
+    <ng-template pTemplate="footer">
+      <tr>
+        <td colspan="4" class="text-right">Total de Aplicaciones</td>
+        <td>{{ total | currency:'USD' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-    <div class="flex justify-content-end gap-2 mt-3">
-        <p-button severity="success" label="Aplicar" (onClick)="aplicarPagos()" />
-    </div>
+  <div class="flex justify-content-end gap-2 mt-3">
+    <p-button severity="success" label="Aplicar" (onClick)="aplicarPagos()" />
+  </div>
 </div>

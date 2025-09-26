@@ -75,6 +75,7 @@ export interface PayloadFactura {
   contratoAnexo: string;
   concepto: string;
   saldo: number;
+  saldoOriginal: number;
   totalNeto: number;
 }
 

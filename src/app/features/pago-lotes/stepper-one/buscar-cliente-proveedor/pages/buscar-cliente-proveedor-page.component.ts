@@ -143,44 +143,14 @@ export class BuscarClienteProveedorPageComponent {
   private initClientesOrProveedoresListener(): void {
     this.isCliente$.pipe(
       tap(() => this.loadingDropdownClienteProveedor = true),
-      switchMap(flag => this.buscarClienteService.getClientesProveedores(this.queryParams, flag)
-      ),
-      finalize(() => this.loadingDropdownClienteProveedor = false)
+      switchMap(flag => this.buscarClienteService.getClientesProveedores(this.queryParams, flag).pipe(
+        finalize(() => this.loadingDropdownClienteProveedor = false))),
     ).subscribe({
       next: ({ data, pagination }) => {
         this.pagination = pagination;
         this.dropdownClienteProveedor = this.isCliente ? data as Clientes : data as Proveedores;
       },
       error: (err) => {
-        // this.dropdownClienteProveedor = {
-        //   status: {
-        //     "statusCode": 200,
-        //     "message": "OK!",
-        //     isSuccess: true
-        //   },
-        //   "payload": [
-        //     {
-        //       "provId": 1,
-        //       "nombre": "PROVEEDOR INTERNO ADMINISTRATIVO"
-        //     },
-        //     {
-        //       "provId": 2,
-        //       "nombre": "PROVEEDOR GENERICO DE MIGRACIÓN"
-        //     },
-        //     {
-        //       "provId": 3,
-        //       "nombre": "AKTIUM S.A. de C.V."
-        //     },
-        //     {
-        //       "provId": 4,
-        //       "nombre": "AUTOMOTRIZ DEL CENTRO S.A. DE C.V."
-        //     },
-        //     {
-        //       "provId": 5,
-        //       "nombre": "AUTOMOTRIZ LOMAS SAN LUIS SA DE CV"
-        //     }
-        //   ]
-        // };
         console.log('Error en obtener datos', err);
       }
     })
