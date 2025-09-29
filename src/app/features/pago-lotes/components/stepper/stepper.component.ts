@@ -10,7 +10,7 @@ import { ParamsIngresos } from '../../../../core/services/pago-lotes/interfaces/
 export class StepperComponent{
   public isValidFilterIngresos: boolean = false;
   public queryParamsIngresos: ParamsIngresos | undefined;
-  public isValidSelectedIngreso: boolean = true;
+  public isValidSelectedIngreso: boolean = false;
   public activeIndex: number = 0;
 
   onValidSearchIngresos(isValid: boolean): void {
