@@ -7,6 +7,7 @@ import { FacturasService } from '../../../../../core/services/pago-lotes/factura
 import Swal from 'sweetalert2';
 import { restrictNegativeValues } from '../../../../../shared/helpers/form.helpers';
 import { InputNumberInputEvent } from 'primeng/inputnumber';
+import { TablePageEvent } from 'primeng/table';
 
 
 interface ObjectPaso1 {
@@ -34,6 +35,8 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
   public columns: CustomColumn[] = [];
   public total: number = 0;
   public limiSaldo: number = 0;
+  public rows: number = 5;
+  public first: number = 0;
   public createPaymentBatchRequest: CreatePaymentBatchRequest = {
     partyType: 0,
     mode: 0,
@@ -201,6 +204,11 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
         console.log('Error en status de pagos', err);
       }
     })
+  }
+
+  pageChange(event: TablePageEvent): void {
+    this.rows = event.rows;
+    this.first = event.first;
   }
 
 }

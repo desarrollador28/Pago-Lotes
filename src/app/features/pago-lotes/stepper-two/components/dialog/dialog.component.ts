@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TableDialog } from '../../interfaces/dialog.interface';
 import { catchError, debounceTime, finalize, of, Subject, switchMap, tap } from 'rxjs';
-import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
 import { Cliente, Clientes, Factura, Facturas, Params, PayloadClientes, PayloadFactura } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { FacturasService } from '../../../../../core/services/pago-lotes/facturas.service';
 import { CustomColumn } from '../../../interfaces/table.interface';
+import { Paginator } from '../../../../../shared/helpers/paginator.helper';
+import { TablePageEvent } from 'primeng/table';
 
 
 @Component({
@@ -19,7 +20,9 @@ export class DialogComponent implements OnInit {
   @Output() facturasEvent = new EventEmitter<PayloadFactura[]>
   @Input() idCliente: number = 0;
   @Input() isValidCliente: boolean = false;
-  private filtro$ = new Subject<string>;
+  public paginator = new Paginator();
+  private isCliente$: Subject<boolean> = new Subject<boolean>;
+  private filtro$: Subject<string> = new Subject<string>;
   public visible: boolean = false;
   public loadingTable: boolean = false;
   public total: number = 0;
@@ -36,33 +39,42 @@ export class DialogComponent implements OnInit {
   };
   public queryParams: Params = {
     searchTerm: '',
-    pageSize: 10,
-    pageNumber: 1,
     idCliente: 0,
+    paginationRequest: {
+      pageNumber: 1,
+      pageSize: 5
+    }
   }
 
   constructor(
     private clienteService: BuscarClienteProveedorService,
     private facturaService: FacturasService,
-    private sessionService: SessionService,
   ) { }
 
   ngOnInit() {
     this.showColumns();
     this.filtroApi$();
-    // this.selectionModel = this.clienteSelected ?? this.facturasSelected;
+    this.getClientesOrFacturas$();
 
   }
 
 
+  /**
+   * Mostrar dialog de clientes o facturas
+   * Dispara metodo getClientesOrFacturas$()
+   * @return void
+   */
   showDialog(): void {
     this.visible = true;
-    // this.getClientes();
-    this.dataDialog.isCliente ? this.getClientes() : this.getFacturas();
+
+    this.dataDialog.isCliente
+      ? this.isCliente$.next(this.dataDialog.isCliente)
+      : this.isCliente$.next(this.dataDialog.isCliente);
   }
 
   /**
    * Columnas de la tabla clientes o factura
+   * @return void
    */
   showColumns(): void {
     if (this.dataDialog.isCliente) {
@@ -86,29 +98,42 @@ export class DialogComponent implements OnInit {
     }
   }
 
+
   /**
-   * Obtener clientes páginado
+   * Obtener clientes o facturas paginado
+   * Nota: solo se manda a llamar una vez
+   * @return void
    */
-  getClientes(): void {
-    this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente)
-      .pipe(
-        tap(() => this.loadingTable = true),
-        finalize(() => this.loadingTable = false)
-      ).subscribe({
-        next: ({ data, pagination }) => {
-          this.dataTable = data as Clientes;
-          // console.log(data)
-          // console.log(pagination)
-        },
-        error: (err) => {
-          console.log('Error en busqueda de cliente', err);
-        }
-      })
+  getClientesOrFacturas$(): void {
+    this.isCliente$.pipe(
+      (tap(() => {
+        this.loadingTable = true
+        this.queryParams.paginationRequest = this.paginator.request;
+      })),
+      switchMap((flag) =>
+        flag ? this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente).pipe(
+          finalize(() => this.loadingTable = false),)
+          : this.facturaService.getFacturasFilter(this.queryParams).pipe(
+            finalize(() => this.loadingTable = false),
+          )
+      ),
+    ).subscribe({
+      next: ({ data, pagination }) => {
+        this.dataTable = this.dataDialog.isCliente ? data as Clientes : data as Facturas;
+        this.paginator.setResponse(pagination.TotalCount);
+
+      },
+      error: (err) => {
+        console.error('Error en la busqueda de datos', err)
+      }
+    })
   }
 
 
   /**
    * Llamar api para busqueda por nombre
+   * Nota: solo se manda a llamar una vez
+   * @return voud
    */
   filtroApi$(): void {
     const searchFactura: boolean = this.dataDialog.isCliente ? false : true;
@@ -132,35 +157,13 @@ export class DialogComponent implements OnInit {
           finalize(() => this.loadingTable = false)
         )
       )
-    ).subscribe(({ data, pagination }) => {
+    ).subscribe(({ data }) => {
       this.dataTable = this.dataDialog.isCliente ? data as Clientes : data as Facturas;
     });
   }
 
   /**
-   * Obtener facturas paginado
-   */
-  getFacturas(): void {
-    this.queryParams.idCliente = this.idCliente;
-    this.facturaService.getFacturasFilter(this.queryParams)
-      .pipe(
-        tap(() => {
-          this.loadingTable = true;
-        }),
-        finalize(() => this.loadingTable = false),)
-      .subscribe({
-        next: ({ data, pagination }) => {
-          this.dataTable = data as Facturas;
-        },
-        error: (err) => {
-          console.log('Error en listado de facturas', err);
-        }
-      })
-  }
-
-
-  /**
-   * Filtrado de clientes por nombre
+   * Evento Filtrado de clientes por nombre
    * @param event
    * @return void
    */
@@ -218,4 +221,13 @@ export class DialogComponent implements OnInit {
 
     this.total = total;
   }
+
+  pageChange(event: TablePageEvent): void {
+    this.paginator.update(event);
+
+    this.dataDialog.isCliente
+      ? this.isCliente$.next(this.dataDialog.isCliente)
+      : this.isCliente$.next(this.dataDialog.isCliente);
+  }
+
 }

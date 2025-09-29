@@ -11,7 +11,8 @@ import { BuscarClienteProveedorService } from '../../../../../core/services/pago
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { ViewportService } from '../../../../../core/services/viewport.service';
 import { resetFieldsForm, toggleFields, isInvalidField, getValidationMessage, toggleValidators } from '../../../../../shared/helpers/form.helpers';
-import { ParamsIngresos, Clientes, Proveedores, StateOptions, Params, Pagination, Proveedor, Cliente } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { ParamsIngresos, Clientes, Proveedores, StateOptions, Params, Proveedor, Cliente } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { PaginationResponse } from '../../../../../shared/helpers/paginator.helper';
 
 @Component({
   selector: 'pago-lotes-buscar-cliente-proveedor',
@@ -37,10 +38,6 @@ export class BuscarClienteProveedorPageComponent {
   public loadingDropdownClienteProveedor: boolean = false;
   public loadingDropdownBancos: boolean = false;
   public isCliente: boolean = false;
-  public pagination: Pagination = {
-    pageSize: 10,
-    pageNumber: 1
-  };
   public dropdownBancos: SelectItemGroup[] = [];
   public ingresoCuentaCorriente: StateOptions[] =
     [
@@ -62,9 +59,11 @@ export class BuscarClienteProveedorPageComponent {
   ];
 
   private queryParams: Params = {
-    pageNumber: 1,
-    pageSize: 10,
     searchTerm: '',
+    paginationRequest: {
+      pageNumber: 1,
+      pageSize: 5
+    }
   };
 
   private fieldsForm: string[] = [
@@ -147,7 +146,6 @@ export class BuscarClienteProveedorPageComponent {
         finalize(() => this.loadingDropdownClienteProveedor = false))),
     ).subscribe({
       next: ({ data, pagination }) => {
-        this.pagination = pagination;
         this.dropdownClienteProveedor = this.isCliente ? data as Clientes : data as Proveedores;
       },
       error: (err) => {

@@ -22,7 +22,7 @@ export class StepperComponent{
   }
 
   eventIsValidSelectedIngreso(event: boolean): void {
-    this.isValidSelectedIngreso = !event;
+    this.isValidSelectedIngreso = event;
     this.activeIndex = 1;
   }
 

@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../../enviroments/enviroment';
-import { Clientes, CreatePaymentBatchRequest, CreatePaymentBatchResponse, Facturas, GetBatchStatus, Pagination, Params, Proveedores } from './interfaces/pago-lotes.interface';
+import { Clientes, CreatePaymentBatchRequest, CreatePaymentBatchResponse, Facturas, GetBatchStatus, Params } from './interfaces/pago-lotes.interface';
 import { map, Observable, of } from 'rxjs';
+import { PaginationResponse } from '../../../shared/helpers/paginator.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class FacturasService {
 
   constructor(private http: HttpClient) { }
 
-  getFacturasFilter(queryParams: Params): Observable<{ data: Facturas, pagination: Pagination }> {
+  getFacturasFilter(queryParams: Params): Observable<{ data: Facturas, pagination: PaginationResponse }> {
 
     let params = new HttpParams()
       .set('searchTerm', queryParams.searchTerm)
-      .set('PageSize', queryParams.pageSize)
-      .set('PageNumber', queryParams.pageNumber);
+      .set('PageSize', queryParams.paginationRequest.pageSize)
+      .set('PageNumber', queryParams.paginationRequest.pageNumber);
 
     if (queryParams.idCliente) {
       params = params.set('idCliente', queryParams.idCliente);

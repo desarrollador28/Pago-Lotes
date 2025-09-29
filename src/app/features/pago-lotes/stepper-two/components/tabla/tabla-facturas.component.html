@@ -1,6 +1,9 @@
 <!-- Tabla facturas -->
 <div class="card" *ngIf="facturas.length > 0">
-  <p-table [value]="facturas" [columns]="columns" [tableStyle]="{ 'min-width': '50rem' }" editMode="cell">
+  <p-table [value]="facturas" [columns]="columns" [tableStyle]="{ 'min-width': '50rem' }" editMode="cell"
+    [paginator]="true" [showCurrentPageReport]="true" [totalRecords]="facturas.length"
+    [rowsPerPageOptions]="[5, 10, 15, 20]" (onPage)="pageChange($event)" [rows]="rows" [(first)]="first"
+    currentPageReportTemplate="Mostrando de {first} a {last} de {totalRecords} registros">
 
     <!-- Header -->
     <ng-template pTemplate="header">
@@ -20,13 +23,14 @@
               <!-- Input en edición -->
               <ng-template pTemplate="input">
                 <p-inputNumber [(ngModel)]="rowData[col.field]" mode="decimal" [minFractionDigits]="2"
-                  [maxFractionDigits]="5"  (onKeyDown)="preventNegative($event)" (onInput)="updateSaldoInput(rowData, $event)" [min]="0" [max]="rowData.saldoOriginal"/>
+                  [maxFractionDigits]="5" (onKeyDown)="preventNegative($event)"
+                  (onInput)="updateSaldoInput(rowData, $event)" [min]="0" [max]="rowData.saldoOriginal" />
               </ng-template>
 
               <!-- Input lectura -->
               <ng-template pTemplate="output">
-                <p-button class="w-max" [plain]="true" [text]="true"
-                  label="{{ rowData[col.field] | currency:'USD' }}" styleClass="w-full" />
+                <p-button class="w-max" [plain]="true" [text]="true" label="{{ rowData[col.field] | currency:'USD' }}"
+                  styleClass="w-full" />
               </ng-template>
             </p-cellEditor>
           </ng-container>

@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { finalize, Subject, switchMap, tap } from 'rxjs';
 import { CustomColumn } from '../../../interfaces/table.interface';
-import { Ingresos, Pagination, ParamsIngresos, PayloadIngresos } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Ingresos, ParamsIngresos, PayloadIngresos } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
+import { TablePageEvent } from 'primeng/table';
+import { Paginator } from '../../../../../shared/helpers/paginator.helper';
 
 
 @Component({
@@ -12,15 +14,16 @@ import { SessionService } from '../../../../../core/services/pago-lotes/session.
   templateUrl: './tabla.component.html',
   styleUrls: ['./tabla.component.css']
 })
-export class TablaIngresosBancariosComponent implements OnChanges{
+export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
   @Input() queryParamsIngresos: ParamsIngresos | undefined;
   @Output() eventSelectIngreso: EventEmitter<boolean> = new EventEmitter<boolean>;
+  public paginator = new Paginator();
   private isCuentaCorriente$ = new Subject<boolean>();
   public ingresosFilter!: Ingresos;
   public loading: boolean = false;
-  public pagination: Pagination | undefined;
   public cols!: CustomColumn[];
   public total: number = 0;
+  public totalRecords: number = 595;
   public ingresoSelectedRadio: PayloadIngresos | null = {
     idIngreso: 0,
     importe: 0,
@@ -33,13 +36,12 @@ export class TablaIngresosBancariosComponent implements OnChanges{
     private sessionService: SessionService,
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.pagination = {
-      pageSize: 10,
-      pageNumber: 1,
-      totalCount: 0,
-      currentPage: 1,
-    };
+  ngOnInit(): void {
+    this.initGetDataTable$();
+
+    this.queryParamsIngresos?.idCuentaBancaria
+      ? this.isCuentaCorriente$.next(false)
+      : this.isCuentaCorriente$.next(true);
 
     this.cols = [
       { field: 'idIngreso', header: 'ID Ingreso' },
@@ -49,10 +51,11 @@ export class TablaIngresosBancariosComponent implements OnChanges{
       { field: 'saldo', header: 'Saldo', pipe: 'currency' },
       { field: 'acciones', header: 'Acciones' },
     ];
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
     if (!changes['queryParamsIngresos']) return
     this.ingresoSelectedRadio = null;
-    this.initGetDataTable();
 
     this.queryParamsIngresos?.idCuentaBancaria
       ? this.isCuentaCorriente$.next(false)
@@ -66,21 +69,21 @@ export class TablaIngresosBancariosComponent implements OnChanges{
    * @param isCuentaCorriente Boolean
    * @return void
    */
-  private initGetDataTable(): void {
+  private initGetDataTable$(): void {
     this.isCuentaCorriente$.pipe(
       tap(() => this.loading = true),
       switchMap(flag => flag
-        ? this.buscarClienteProveedorService.GetMovimientoCuentaCorrienteById(this.pagination!, this.queryParamsIngresos!).pipe(
+        ? this.buscarClienteProveedorService.GetMovimientoCuentaCorrienteById(this.paginator.request, this.queryParamsIngresos!).pipe(
           finalize(() => this.loading = false)
         )
-        : this.buscarClienteProveedorService.getAllIngresos(this.pagination!, this.queryParamsIngresos!).pipe(
+        : this.buscarClienteProveedorService.getAllIngresos(this.paginator.request, this.queryParamsIngresos!).pipe(
           finalize(() => this.loading = false)
         )
       ),
     ).subscribe({
       next: ({ data, pagination }) => {
-        this.pagination = pagination;
         this.ingresosFilter = data;
+        this.paginator.setResponse(pagination.TotalCount);
       },
       error: (err) => {
         console.log('Error en el listado de la tabla', err)
@@ -99,4 +102,13 @@ export class TablaIngresosBancariosComponent implements OnChanges{
       ? (this.eventSelectIngreso.emit(true), this.ingresoSelectedRadio.saldo)
       : (this.eventSelectIngreso.emit(false), 0);
   }
+
+  pageChange(event: TablePageEvent): void {
+    this.paginator.update(event);
+    this.queryParamsIngresos?.idCuentaBancaria
+      ? this.isCuentaCorriente$.next(false)
+      : this.isCuentaCorriente$.next(true);
+  }
+
+
 }

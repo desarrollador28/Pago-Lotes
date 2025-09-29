@@ -7,7 +7,7 @@ import {
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-BF2STKYA.js";
+} from "./chunk-G6LDYIDB.js";
 import {
   Directive,
   ElementRef,
@@ -192,4 +192,4 @@ export {
   Ripple,
   RippleModule
 };
-//# sourceMappingURL=chunk-4P7Y4XJL.js.map
+//# sourceMappingURL=chunk-FVTNRBGJ.js.map

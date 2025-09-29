@@ -42,8 +42,10 @@ export class DocumentosCobranzaPageComponent implements OnInit {
   public total: number = 0;
   public queryParams: Params = {
     searchTerm: '',
-    pageSize: 10,
-    pageNumber: 1
+    paginationRequest: {
+      pageNumber: 1,
+      pageSize: 5
+    }
   }
   public clienteTable: TableDialog = {
     label: '',

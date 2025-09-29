@@ -2,7 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../../enviroments/enviroment';
 import { map, Observable, of } from 'rxjs';
-import { Bancos, Cliente, Clientes, Ingresos, Pagination, Params, ParamsIngresos, Proveedor, Proveedores } from './interfaces/pago-lotes.interface';
+import { Bancos, Cliente, Clientes, Ingresos, Params, ParamsIngresos, Proveedor, Proveedores } from './interfaces/pago-lotes.interface';
+import { PaginationRequest, PaginationResponse } from '../../../shared/helpers/paginator.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class BuscarClienteProveedorService {
     return this.http.get<Bancos>(`${this.baseUrl}/bancos`);
   }
 
-  getClientesProveedores(params: Params, isCliente: boolean): Observable<{ data: Clientes | Proveedores; pagination: Pagination }> {
+  getClientesProveedores(params: Params, isCliente: boolean): Observable<{ data: Clientes | Proveedores; pagination: PaginationResponse }> {
     const fullUrl = isCliente ? `${this.baseUrl}/clientes` : `${this.baseUrl}/proveedores`;
     const queryParams = new HttpParams()
       .set('searchTerm', params.searchTerm)
-      .set('PageSize', params.pageSize)
-      .set('PageNumber', params.pageNumber);
+      .set('PageSize', params.paginationRequest.pageSize)
+      .set('PageNumber', params.paginationRequest.pageNumber);
 
     return this.http.get<Clientes | Proveedores>(fullUrl, { observe: 'response', params: queryParams }).pipe(
       map(response => {
@@ -46,7 +47,7 @@ export class BuscarClienteProveedorService {
     return this.http.get<Cliente | Proveedor>(url);
   }
 
-  getAllIngresos(pagination: Pagination, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: Pagination }> {
+  getAllIngresos(pagination: PaginationRequest, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: PaginationResponse }> {
 
     let queryParamsFilter = new HttpParams()
       .set('PageNumber', pagination.pageNumber)
@@ -87,7 +88,7 @@ export class BuscarClienteProveedorService {
     );
   }
 
-  GetMovimientoCuentaCorrienteById(pagination: Pagination, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: Pagination }> {
+  GetMovimientoCuentaCorrienteById(pagination: PaginationRequest, queryParams: ParamsIngresos): Observable<{ data: Ingresos; pagination: PaginationResponse }> {
 
     const resource: string = queryParams.idProveedor ? 'proveedores' : 'clientes';
     const id: number = queryParams.idProveedor ??  queryParams.idCliente!;

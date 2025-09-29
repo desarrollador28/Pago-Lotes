@@ -1,8 +1,10 @@
 <div class="card" *ngIf="ingresosFilter">
   <h2>Ingresos bancarios</h2>
-  <p-table [columns]="cols" [value]="ingresosFilter.payload" [scrollable]="true" scrollHeight="400px"
-    [loading]="loading" [tableStyle]="{'min-width': '50rem'}"
-    [(selection)]="ingresoSelectedRadio">
+  <p-table [columns]="cols" [value]="ingresosFilter.payload" [paginator]="true" [rowsPerPageOptions]="[5, 10, 15, 20]"
+  [rows]="paginator.response.PageSize" [totalRecords]="paginator.response.TotalCount" [lazy]="true"
+  (onPage)="pageChange($event)" [showCurrentPageReport]="true" [loading]="loading"
+  [loadingIcon]="'pi pi-spin pi-spinner'" [(selection)]="ingresoSelectedRadio"
+  currentPageReportTemplate="Mostrando de {first} a {last} de {totalRecords} registros">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns">
@@ -18,8 +20,7 @@
           <span *ngIf="!col.pipe"> {{ rowData[col.field] }} </span>
 
           <!-- Ingresos -->
-          <p-tableRadioButton *ngIf="col.field == 'acciones'" [value]="rowData"
-            (click)="selectIngreso()" />
+          <p-tableRadioButton *ngIf="col.field == 'acciones'" [value]="rowData" (click)="selectIngreso()" />
 
           <!-- Cuenta corriente -->
           <!-- <p-tableCheckbox *ngIf="col.field == 'acciones' && !queryParamsIngresos!.idCuentaBancaria" [value]="rowData"

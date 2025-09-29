@@ -1,3 +1,5 @@
+import { PaginationRequest } from "../../../../shared/helpers/paginator.helper";
+
 interface Status {
   isSuccess: boolean;
   statusCode: number;
@@ -32,14 +34,10 @@ export interface PayloadClientes {
 }
 
 export interface Params {
+  paginationRequest: PaginationRequest;
   searchTerm: string;
-  pageSize: number;
-  pageNumber: number;
-  totalCount?: number;
-  currentPage?: number;
-  idCliente?: number
+  idCliente?: number;
 }
-
 export interface StateOptions {
   label: string;
   value: string;
@@ -93,18 +91,18 @@ export interface Items {
 }
 
 export interface CreatePaymentBatchResponse {
-  id:    number;
+  id: number;
   jobId: string;
   location: string;
 }
 
 export interface PayloadGetBatchStatus {
-  batchId:    number;
-  state:      number;
-  total:      number;
-  succeeded:  number;
-  failed:     number;
-  running:    number;
+  batchId: number;
+  state: number;
+  total: number;
+  succeeded: number;
+  failed: number;
+  running: number;
   difference: null;
 }
 
@@ -116,7 +114,6 @@ export type Cliente = ApiResponseObject<PayloadClientes>;
 export type Proveedores = ApiResponseArray<PayloadProveedores>
 export type Ingresos = ApiResponseArray<PayloadIngresos>
 export type Proveedor = ApiResponseObject<PayloadProveedores>
-export type Pagination = Omit<Params, 'searchTerm'>
 export type Facturas = ApiResponseArray<PayloadFactura>
 export type Factura = ApiResponseObject<PayloadFactura>
 export type GetBatchStatus = ApiResponseObject<PayloadGetBatchStatus>

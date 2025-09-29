@@ -1,11 +1,15 @@
 <div class="card flex justify-content-center">
-  <p-button (onClick)="showDialog()" [label]="dataDialog.label" [rounded]="dataDialog.roudend"
-    [icon]="dataDialog.icon" [disabled]="isValidCliente"/>
-  <p-dialog header="{{ dataDialog.title}} : {{ total | currency: 'USD'}}" [modal]="true" [(visible)]="visible" [style]="{ width: '60rem' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" *ngIf="dataTable?.payload">
+  <p-button (onClick)="showDialog()" [label]="dataDialog.label" [rounded]="dataDialog.roudend" [icon]="dataDialog.icon"
+    [disabled]="isValidCliente" />
+  <p-dialog header="{{ dataDialog.title}} : {{ total | currency: 'USD'}}" [modal]="true" [(visible)]="visible"
+    [style]="{ width: '70rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true"
+    *ngIf="dataTable?.payload">
 
 
-    <p-table [columns]="cols" [value]="dataTable!.payload" [tableStyle]="{ 'min-width': '50rem' }"
+    <p-table [columns]="cols" [value]="dataTable!.payload" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true"
+      [lazy]="true" [rows]="paginator.response.PageSize" [totalRecords]="paginator.response.TotalCount"
+      [rowsPerPageOptions]="[5, 10, 15, 20]" (onPage)="pageChange($event)" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando de {first} a {last} de {totalRecords} registros"
       [loading]="loadingTable" [(selection)]="selectionModel">
 
       <!-- Acciones table -->

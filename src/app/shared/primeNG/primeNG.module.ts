@@ -17,6 +17,7 @@ import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AccordionModule } from 'primeng/accordion';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [],
@@ -40,7 +41,8 @@ import { AccordionModule } from 'primeng/accordion';
     StepperModule,
     TableModule,
     ToolbarModule,
-    AccordionModule
+    AccordionModule,
+    ProgressSpinnerModule
   ]
 })
 export class PrimeNGModule { }

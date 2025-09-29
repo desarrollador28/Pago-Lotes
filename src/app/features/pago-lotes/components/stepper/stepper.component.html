@@ -6,14 +6,15 @@
     <p-accordionTab header="Paso 1: Buscar Proveedor o Cliente">
 
       <pago-lotes-buscar-cliente-proveedor (isValidSearch)="onValidSearchIngresos($event)"
-        (queryParmasIngresos)="eventQueryParamsIngresos($event)"></pago-lotes-buscar-cliente-proveedor>
+      (queryParmasIngresos)="eventQueryParamsIngresos($event)"></pago-lotes-buscar-cliente-proveedor>
 
       <pago-lotes-tabla *ngIf="isValidFilterIngresos" [queryParamsIngresos]="queryParamsIngresos!"
-        (eventSelectIngreso)="eventIsValidSelectedIngreso($event)"></pago-lotes-tabla>
+      (eventSelectIngreso)="eventIsValidSelectedIngreso($event)"></pago-lotes-tabla>
+
     </p-accordionTab>
 
     <!-- Paso 2: -->
-    <p-accordionTab header="Paso 2: Documentos Cobranza" [disabled]="isValidSelectedIngreso">
+    <p-accordionTab header="Paso 2: Documentos Cobranza" [disabled]="!isValidSelectedIngreso">
       <pago-lotes-documentos-cobranza-page></pago-lotes-documentos-cobranza-page>
     </p-accordionTab>
   </p-accordion>
