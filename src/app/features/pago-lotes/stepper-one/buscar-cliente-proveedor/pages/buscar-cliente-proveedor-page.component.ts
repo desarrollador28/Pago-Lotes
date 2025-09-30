@@ -12,7 +12,6 @@ import { SessionService } from '../../../../../core/services/pago-lotes/session.
 import { ViewportService } from '../../../../../core/services/viewport.service';
 import { resetFieldsForm, toggleFields, isInvalidField, getValidationMessage, toggleValidators } from '../../../../../shared/helpers/form.helpers';
 import { ParamsIngresos, Clientes, Proveedores, StateOptions, Params, Proveedor, Cliente } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
-import { PaginationResponse } from '../../../../../shared/helpers/paginator.helper';
 
 @Component({
   selector: 'pago-lotes-buscar-cliente-proveedor',

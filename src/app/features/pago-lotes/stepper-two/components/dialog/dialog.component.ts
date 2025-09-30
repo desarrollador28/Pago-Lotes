@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { TableDialog } from '../../interfaces/dialog.interface';
 import { catchError, debounceTime, finalize, of, Subject, switchMap, tap } from 'rxjs';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
-import { Cliente, Clientes, Factura, Facturas, Params, PayloadClientes, PayloadFactura } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Cliente, Clientes, Factura, Facturas, Params } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { FacturasService } from '../../../../../core/services/pago-lotes/facturas.service';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { Paginator } from '../../../../../shared/helpers/paginator.helper';
@@ -16,8 +16,8 @@ import { TablePageEvent } from 'primeng/table';
   styleUrl: './dialog.component.css'
 })
 export class DialogComponent implements OnInit {
-  @Output() eventCliente = new EventEmitter<PayloadClientes>;
-  @Output() facturasEvent = new EventEmitter<PayloadFactura[]>
+  @Output() eventCliente = new EventEmitter<Cliente['payload']>;
+  @Output() facturasEvent = new EventEmitter<Facturas['payload']>
   @Input() idCliente: number = 0;
   @Input() isValidCliente: boolean = false;
   public paginator = new Paginator();
@@ -28,7 +28,14 @@ export class DialogComponent implements OnInit {
   public total: number = 0;
   public isValidFacturas: boolean = true;
   public selectionModel: Factura | Cliente | undefined;
-  public facturasSelected: PayloadFactura[] = [];
+  public facturasSelected: Facturas = {
+    status: {
+      isSuccess: false,
+      statusCode: 0,
+      message: ''
+    },
+    payload: []
+  };
   public dataTable: Clientes | Facturas | undefined;
   public cols: CustomColumn[] = [];
   @Input() dataDialog: TableDialog = {
@@ -177,18 +184,18 @@ export class DialogComponent implements OnInit {
    * Se pueden seleccionar multiples facturas de un cliente
    * @param rowData
    */
-  selectData(rowData: PayloadClientes | PayloadFactura): void {
+  selectData(rowData: Cliente['payload'] | Factura['payload']): void {
     if (this.dataDialog.isCliente) {
-      const cliente = rowData as PayloadClientes;
+      const cliente = rowData as Cliente['payload'];
       this.eventCliente.emit(cliente);
       this.visible = false;
     } else {
-      const factura = rowData as PayloadFactura;
-      const exist = this.facturasSelected.some(f => f.idFactura === factura.idFactura);
+      const factura = rowData as Factura['payload'];
+      const exist = this.facturasSelected.payload.some(f => f.idFactura === factura.idFactura);
       if (exist) {
-        this.facturasSelected = this.facturasSelected.filter(f => f.idFactura !== factura.idFactura);
+        this.facturasSelected!.payload = this.facturasSelected.payload.filter(f => f.idFactura !== factura.idFactura);
       } else {
-        this.facturasSelected.push(factura);
+        this.facturasSelected!.payload.push(factura);
       }
 
       this.calculateTotal();
@@ -197,25 +204,25 @@ export class DialogComponent implements OnInit {
 
   cancelar(): void {
     this.visible = false;
-    this.facturasSelected = [];
+    this.facturasSelected.payload = [];
     this.total = 0;
-    this.facturasEvent.emit(this.facturasSelected);
+    this.facturasEvent.emit(this.facturasSelected.payload);
   }
 
   //Disparar evento para mostrar facturas
   facturasApply(): void {
-    this.facturasEvent.emit([...this.facturasSelected]);
+    this.facturasEvent.emit(this.facturasSelected.payload);
     this.visible = false;
   }
 
   calculateTotal(): void {
-    if (this.facturasSelected.length === 0) {
+    if (this.facturasSelected.payload.length === 0) {
       this.total = 0;
       return;
     }
 
     let total = 0;
-    for (let factura of this.facturasSelected) {
+    for (let factura of this.facturasSelected.payload) {
       total += factura.saldo;
     }
 

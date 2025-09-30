@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchError, debounce, debounceTime, finalize, map, of, Subject, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, finalize, of, Subject, switchMap} from 'rxjs';
 import { InputNumberInputEvent } from 'primeng/inputnumber';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
-import { Cliente, CreatePaymentBatchRequest, Items, Params, PayloadClientes, PayloadFactura, PayloadIngresos, PayloadProveedores } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Cliente, CreatePaymentBatchRequest, Facturas, Ingreso, Params} from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { TableDialog } from '../../interfaces/dialog.interface';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { getValidationMessage, isInvalidField } from '../../../../../shared/helpers/form.helpers';
@@ -24,14 +24,14 @@ export class DocumentosCobranzaPageComponent implements OnInit {
   private filtro$ = new Subject<number>();
   public columns: CustomColumn[] = [];
   public loading: boolean = false;
-  public facturas: PayloadFactura[] = [];
-  public ingresoBancario: PayloadIngresos = {
+  public facturas!: Facturas['payload'];
+  public ingresoBancario: Ingreso['payload'] = {
     idIngreso: 0,
     importe: 0,
     fecha: new Date(),
     referencia: '',
     saldo: 0
-  }
+  };
   public createPaymentBatchRequest: CreatePaymentBatchRequest = {
     partyType: 0,
     mode: 0,
@@ -141,13 +141,13 @@ export class DocumentosCobranzaPageComponent implements OnInit {
    * @param eventCliente
    * @return void
    */
-  eventClienteSelected(eventCliente: PayloadClientes): void {
+  eventClienteSelected(eventCliente: Cliente['payload']): void {
     this.formDocumentosCobranza.setValue(eventCliente);
     this.idCliente = eventCliente.idCliente;
   }
 
   //Obtener facturas para llenar tabla
-  facturasShowTable(event: PayloadFactura[]): void {
+  facturasShowTable(event: Facturas['payload']): void {
     this.facturas = event;
   }
 

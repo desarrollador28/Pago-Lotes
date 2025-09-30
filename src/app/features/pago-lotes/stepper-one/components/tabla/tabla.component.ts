@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { finalize, Subject, switchMap, tap } from 'rxjs';
 import { CustomColumn } from '../../../interfaces/table.interface';
-import { Ingresos, ParamsIngresos, PayloadIngresos } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Ingresos, ParamsIngresos, Ingreso } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { TablePageEvent } from 'primeng/table';
@@ -24,13 +24,7 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
   public cols!: CustomColumn[];
   public total: number = 0;
   public totalRecords: number = 595;
-  public ingresoSelectedRadio: PayloadIngresos | null = {
-    idIngreso: 0,
-    importe: 0,
-    fecha: new Date(),
-    referencia: '',
-    saldo: 0
-  };
+  public ingresoSelectedRadio!: Ingreso['payload'] | null;
   constructor(
     private buscarClienteProveedorService: BuscarClienteProveedorService,
     private sessionService: SessionService,
@@ -96,7 +90,6 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
    * @param rowData PayloadIngresos
    */
   selectIngreso(): void {
-    // sessionStorage.setItem('ingresoBancarioSelected', JSON.stringify(this.ingresoSelectedRadio));
     this.sessionService.set('ingresoBancarioSelected', JSON.stringify(this.ingresoSelectedRadio))
     this.total = this.ingresoSelectedRadio
       ? (this.eventSelectIngreso.emit(true), this.ingresoSelectedRadio.saldo)

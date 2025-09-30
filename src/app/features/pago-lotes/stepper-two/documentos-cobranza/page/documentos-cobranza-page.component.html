@@ -1,4 +1,6 @@
-<h2 class="mb-4" *ngIf="ingresoBancario">Ingreso bancario: {{ ingresoBancario.saldo | currency:'USD' }}</h2>
+<h2 class="mb-4" *ngIf="ingresoBancario">
+  Ingreso bancario: {{ ingresoBancario.saldo | currency:'USD' }}
+</h2>
 <div class="grid" [formGroup]="formDocumentosCobranza">
 
   <!-- ID cliente -->
@@ -46,4 +48,4 @@
   </div>
 </div>
 
-<tabla-facturas [facturas]="facturas" *ngIf="facturas.length > 0"></tabla-facturas>
+<tabla-facturas [facturas]="facturas" *ngIf="facturas"></tabla-facturas>

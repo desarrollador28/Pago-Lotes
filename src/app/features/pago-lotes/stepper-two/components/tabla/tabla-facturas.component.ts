@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { CreatePaymentBatchRequest, Items, PayloadClientes, PayloadFactura, PayloadIngresos, PayloadProveedores } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Cliente, CreatePaymentBatchRequest, Factura, Facturas, Ingreso, Items, Proveedor } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { CurrencyPipe } from '@angular/common';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
@@ -12,7 +12,7 @@ import { TablePageEvent } from 'primeng/table';
 
 interface ObjectPaso1 {
   tipoProveedorCliente: number;
-  listProveedorCliente: PayloadClientes | PayloadProveedores;
+  listProveedorCliente: Cliente | Proveedor;
   ingresoCuentaCorriente: IngresoCuentaCorriente;
   idProveedorCliente: number | null;
   dateMin: null;
@@ -31,7 +31,7 @@ interface IngresoCuentaCorriente {
   styleUrl: './tabla-facturas.component.css'
 })
 export class TablaFacturasComponent implements OnInit, OnChanges {
-  @Input() facturas: PayloadFactura[] = [];
+  @Input() facturas: Facturas['payload'] = [];
   public columns: CustomColumn[] = [];
   public total: number = 0;
   public limiSaldo: number = 0;
@@ -44,14 +44,7 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
     idIngreso: 0,
     items: [],
   };
-  public ingresoBancario: PayloadIngresos = {
-    idIngreso: 0,
-    importe: 0,
-    fecha: new Date(),
-    referencia: '',
-    saldo: 0
-  }
-
+  public ingresoBancario!: Ingreso;
 
   constructor(
     private currencyPipe: CurrencyPipe,
@@ -96,12 +89,12 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
     this.total = total;
   }
 
-  deleteFactura(rowData: PayloadFactura): void {
+  deleteFactura(rowData: Factura['payload']): void {
     this.facturas = this.facturas.filter(f => f.idFactura !== rowData.idFactura);
     this.calculateTotal();
   }
 
-  updateSaldoInput(row: PayloadFactura, event: InputNumberInputEvent): void {
+  updateSaldoInput(row: Factura['payload'], event: InputNumberInputEvent): void {
     const saldo = event.value ?? 0;
     const index = this.facturas.findIndex(f => f.idFactura === row.idFactura);
 
@@ -146,14 +139,14 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
 
     this.createPaymentBatchRequest.partyType = Number(request.tipoProveedorCliente);
     this.createPaymentBatchRequest.mode = Number(request.ingresoCuentaCorriente.value);
-    this.createPaymentBatchRequest.idIngreso = this.ingresoBancario.idIngreso;
+    this.createPaymentBatchRequest.idIngreso = this.ingresoBancario.payload.idIngreso;
 
     if (request.tipoProveedorCliente == 1) {
-      const proveedor = request.listProveedorCliente as PayloadProveedores
-      this.createPaymentBatchRequest.entityId = proveedor.provId;
+      const proveedor = request.listProveedorCliente as Proveedor
+      this.createPaymentBatchRequest.entityId = proveedor.payload.provId;
     } else {
-      const cliente = request.listProveedorCliente as PayloadClientes;
-      this.createPaymentBatchRequest.entityId = cliente.idCliente;
+      const cliente = request.listProveedorCliente as Cliente;
+      this.createPaymentBatchRequest.entityId = cliente.payload.idCliente;
     }
 
     const items: Items[] = this.facturas.map(i => ({

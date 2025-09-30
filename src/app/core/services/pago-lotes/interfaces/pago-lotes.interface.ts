@@ -1,81 +1,6 @@
 import { PaginationRequest } from "../../../../shared/helpers/paginator.helper";
 
-interface Status {
-  isSuccess: boolean;
-  statusCode: number;
-  message: string;
-}
 
-interface ApiResponseArray<T> {
-  status: Status;
-  payload: T[];
-}
-
-interface ApiResponseObject<T> {
-  status: Status;
-  payload: T;
-}
-
-interface Cuenta {
-  idCuenta: number;
-  numeroCuenta: string;
-}
-
-interface PayloadBancos {
-  idBanco: number;
-  nombre: string;
-  cuentas: Cuenta[];
-}
-
-export interface PayloadClientes {
-  idCliente: number;
-  nombre: string;
-  rfc?: string;
-}
-
-export interface Params {
-  paginationRequest: PaginationRequest;
-  searchTerm: string;
-  idCliente?: number;
-}
-export interface StateOptions {
-  label: string;
-  value: string;
-}
-
-
-export interface PayloadIngresos {
-  idIngreso: number;
-  importe: number;
-  fecha: Date;
-  referencia: string;
-  saldo: number;
-}
-
-export interface ParamsIngresos {
-  idCliente: number | null;
-  idProveedor: number | null;
-  idCuentaBancaria: number | null;
-  dateMin?: string;
-  dateMax?: string;
-}
-
-export interface PayloadProveedores {
-  provId: number;
-  nombre: string;
-}
-
-export interface PayloadFactura {
-  idFactura: number;
-  fecha: Date;
-  factura: string;
-  cliente: string;
-  contratoAnexo: string;
-  concepto: string;
-  saldo: number;
-  saldoOriginal: number;
-  totalNeto: number;
-}
 
 export interface CreatePaymentBatchRequest {
   partyType: number;
@@ -106,13 +31,89 @@ export interface PayloadGetBatchStatus {
   difference: null;
 }
 
+export interface Params {
+  paginationRequest: PaginationRequest;
+  searchTerm: string;
+  idCliente?: number;
+}
+export interface StateOptions {
+  label: string;
+  value: string;
+}
 
+
+interface PayloadIngresos {
+  idIngreso: number;
+  importe: number;
+  fecha: Date;
+  referencia: string;
+  saldo: number;
+}
+
+export interface ParamsIngresos {
+  idCliente: number | null;
+  idProveedor: number | null;
+  idCuentaBancaria: number | null;
+  dateMin?: string;
+  dateMax?: string;
+}
+
+interface Status {
+  isSuccess: boolean;
+  statusCode: number;
+  message: string;
+}
+
+interface ApiResponseArray<T> {
+  status: Status;
+  payload: T[];
+}
+
+interface ApiResponseObject<T> {
+  status: Status;
+  payload: T;
+}
+
+interface Cuenta {
+  idCuenta: number;
+  numeroCuenta: string;
+}
+
+interface PayloadBancos {
+  idBanco: number;
+  nombre: string;
+  cuentas: Cuenta[];
+}
+
+interface PayloadClientes {
+  idCliente: number;
+  nombre: string;
+  rfc?: string;
+}
+
+interface PayloadProveedores {
+  provId: number;
+  nombre: string;
+}
+
+interface PayloadFactura {
+  idFactura: number;
+  fecha: Date;
+  factura: string;
+  cliente: string;
+  contratoAnexo: string;
+  concepto: string;
+  saldo: number;
+  saldoOriginal: number;
+  totalNeto: number;
+}
 
 export type Bancos = ApiResponseArray<PayloadBancos>;
 export type Clientes = ApiResponseArray<PayloadClientes>;
 export type Cliente = ApiResponseObject<PayloadClientes>;
 export type Proveedores = ApiResponseArray<PayloadProveedores>
 export type Ingresos = ApiResponseArray<PayloadIngresos>
+export type Ingreso = ApiResponseObject<PayloadIngresos>
 export type Proveedor = ApiResponseObject<PayloadProveedores>
 export type Facturas = ApiResponseArray<PayloadFactura>
 export type Factura = ApiResponseObject<PayloadFactura>
