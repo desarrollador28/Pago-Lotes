@@ -18,6 +18,10 @@ import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AccordionModule } from 'primeng/accordion';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BadgeModule } from 'primeng/badge';
+import { ChipModule } from 'primeng/chip';
+import { TagModule } from 'primeng/tag';
+
 
 @NgModule({
   declarations: [],
@@ -42,7 +46,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     TableModule,
     ToolbarModule,
     AccordionModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    BadgeModule,
+    ChipModule,
+    TagModule
   ]
 })
 export class PrimeNGModule { }

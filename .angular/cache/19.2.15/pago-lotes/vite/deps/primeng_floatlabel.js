@@ -1,7 +1,4 @@
 import {
-  SharedModule
-} from "./chunk-YP3ZOBBB.js";
-import {
   RouterModule
 } from "./chunk-G3JLHFGP.js";
 import "./chunk-NTOOWZMU.js";
@@ -11,6 +8,9 @@ import {
   CommonModule
 } from "./chunk-EWCK6T2S.js";
 import "./chunk-G6LDYIDB.js";
+import {
+  SharedModule
+} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   Component,

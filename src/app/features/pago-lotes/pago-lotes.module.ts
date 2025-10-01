@@ -12,6 +12,7 @@ import { DocumentosCobranzaPageComponent } from './stepper-two/documentos-cobran
 import { DialogComponent } from './stepper-two/components/dialog/dialog.component';
 import { TablaIngresosBancariosComponent } from './stepper-one/components/tabla/tabla.component';
 import { TablaFacturasComponent } from './stepper-two/components/tabla/tabla-facturas.component';
+import { BatchStatusPageComponent } from './stepper-three/pages/batch-status/batch-status-page.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { TablaFacturasComponent } from './stepper-two/components/tabla/tabla-fac
     DocumentosCobranzaPageComponent,
     DialogComponent,
     TablaIngresosBancariosComponent,
-    TablaFacturasComponent
+    TablaFacturasComponent,
+    BatchStatusPageComponent
   ],
   imports: [
     CommonModule,

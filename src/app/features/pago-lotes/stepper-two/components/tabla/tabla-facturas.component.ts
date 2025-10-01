@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Cliente, CreatePaymentBatchRequest, Factura, Facturas, Ingreso, Items, Proveedor } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Cliente, CreatePaymentBatchRequest, Factura, Facturas, GetBatchStatus, Ingreso, Items, Proveedor } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { CurrencyPipe } from '@angular/common';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { restrictNegativeValues } from '../../../../../shared/helpers/form.helpers';
 import { InputNumberInputEvent } from 'primeng/inputnumber';
 import { TablePageEvent } from 'primeng/table';
+import { Router } from '@angular/router';
 
 
 interface ObjectPaso1 {
@@ -44,12 +45,12 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
     idIngreso: 0,
     items: [],
   };
-  public ingresoBancario!: Ingreso;
+  public ingresoBancario!: Ingreso['payload'];
 
   constructor(
     private currencyPipe: CurrencyPipe,
     private sessionService: SessionService,
-    private facturasService: FacturasService
+    private facturasService: FacturasService,
   ) { }
 
   ngOnInit(): void {
@@ -139,11 +140,11 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
 
     this.createPaymentBatchRequest.partyType = Number(request.tipoProveedorCliente);
     this.createPaymentBatchRequest.mode = Number(request.ingresoCuentaCorriente.value);
-    this.createPaymentBatchRequest.idIngreso = this.ingresoBancario.payload.idIngreso;
+    this.createPaymentBatchRequest.idIngreso = this.ingresoBancario.idIngreso;
 
     if (request.tipoProveedorCliente == 1) {
-      const proveedor = request.listProveedorCliente as Proveedor
-      this.createPaymentBatchRequest.entityId = proveedor.payload.provId;
+      const proveedor = request.listProveedorCliente as unknown as Proveedor['payload'];
+      this.createPaymentBatchRequest.entityId = proveedor.provId;
     } else {
       const cliente = request.listProveedorCliente as Cliente;
       this.createPaymentBatchRequest.entityId = cliente.payload.idCliente;
@@ -163,15 +164,19 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
     this.facturasService.createPaymentBatch(this.createPaymentBatchRequest).pipe(
       //TODO: aplicar pipes
     ).subscribe({
-      next: ({ data, location }) => {
+      next: ({ data }) => {
         //TODO: pago en proceso en el texto de la alerta
         Swal.fire({
           title: "Aplicar Pagos",
           text: 'Pagos aplicados con éxito',
           icon: "success",
-          draggable: true
+          draggable: true,
+          confirmButtonText: 'Consultar estado',
+        }).then(() => {
+          this.sessionService.set('batchID', String(data.id))
         });
-        this.getBatchStatus(data.id);
+
+
         // Swal.fire({
         //   title: "<strong>Pago Aplicado</u></strong>",
         //   icon: "success",
@@ -184,17 +189,6 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         console.log('Error en aplicar pagos', err);
-      }
-    })
-  }
-
-  getBatchStatus(id: number): void {
-    this.facturasService.getBatchStatus(id).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (err) => {
-        console.log('Error en status de pagos', err);
       }
     })
   }

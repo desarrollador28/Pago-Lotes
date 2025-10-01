@@ -1,0 +1,51 @@
+<div class="card m-4">
+  <p-card header="Estatus del lote" class="m-4" [formGroup]="formBatch">
+    <div class="grid">
+      <!-- Columa izquierda -->
+      <div class="col-3">
+        <!-- input ID factura -->
+        <div class="p-3">
+          <p-inputGroup>
+          <p-floatLabel>
+              <p-inputNumber inputId="loteId" mode="decimal"  [min]="0" [max]="100" formControlName="batchId"/>
+              <button type="button" pButton icon="pi pi-search" (click)="searchBatch()"></button>
+              <label for="username">Ingresar Lote-ID</label>
+            </p-floatLabel>
+          </p-inputGroup>
+        </div>
+      </div>
+
+      <!-- <p-button icon="pi pi-sync" [rounded]="true" /> -->
+      <!-- Columna de enmedio -->
+      <div class="col-3 text-lg">
+        <!-- Status de la factura -->
+        <div class="p-3 ">
+          <span>Estatus: <p-badge badgeSize="large" [value]="formBatch.get('state')?.value ?? 0"/></span>
+
+        </div>
+        <!-- Facturas enviadas -->
+        <div class="p-3">
+          <span>Facturas enviadas: <p-badge badgeSize="large" severity="success" [value]="formBatch.get('total')?.value ?? 0" /></span>
+
+        </div>
+        <!-- Facturas procesandoce -->
+        <div class="p-3">
+          <span>Facturas procesandoce: <p-badge badgeSize="large" severity="warning" [value]="formBatch.get('running')?.value ?? 0" /></span>
+        </div>
+      </div>
+
+      <!-- Columna izquierda -->
+      <div class="col-3 text-lg">
+        <!-- Facturas exitosas -->
+        <div class="text-center p-3 ">
+          <span>Procesadas con éxito: <p-badge badgeSize="large" severity="success" [value]="formBatch.get('succeeded')?.value ?? 0" /></span>
+
+        </div>
+        <!-- Facturas fallidas -->
+        <div class="text-center p-3 ">
+          <span>Procesadas sin éxito: <p-badge badgeSize="large" severity="danger" [value]="formBatch.get('failed')?.value ?? 0" /></span>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

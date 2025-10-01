@@ -10,12 +10,6 @@ import {
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
 import {
-  Header,
-  PrimeTemplate,
-  SharedModule,
-  UniqueComponentId
-} from "./chunk-YP3ZOBBB.js";
-import {
   animate,
   state,
   style,
@@ -30,6 +24,12 @@ import {
   NgTemplateOutlet
 } from "./chunk-EWCK6T2S.js";
 import "./chunk-G6LDYIDB.js";
+import {
+  Header,
+  PrimeTemplate,
+  SharedModule,
+  UniqueComponentId
+} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

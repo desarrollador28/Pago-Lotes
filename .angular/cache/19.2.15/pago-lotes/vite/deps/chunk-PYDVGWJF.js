@@ -1,6 +1,6 @@
 import {
   Ripple
-} from "./chunk-FVTNRBGJ.js";
+} from "./chunk-3BG2FSW3.js";
 import {
   SpinnerIcon
 } from "./chunk-ERFFAC6X.js";
@@ -11,11 +11,6 @@ import {
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
 import {
-  ObjectUtils,
-  PrimeTemplate,
-  SharedModule
-} from "./chunk-YP3ZOBBB.js";
-import {
   NgClass,
   NgIf,
   NgStyle,
@@ -24,6 +19,11 @@ import {
 import {
   DOCUMENT
 } from "./chunk-G6LDYIDB.js";
+import {
+  ObjectUtils,
+  PrimeTemplate,
+  SharedModule
+} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -1004,4 +1004,4 @@ export {
   Button,
   ButtonModule
 };
-//# sourceMappingURL=chunk-V5Z34O3D.js.map
+//# sourceMappingURL=chunk-PYDVGWJF.js.map

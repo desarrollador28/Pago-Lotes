@@ -1,18 +1,10 @@
 import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-5L46MWTK.js";
+import {
   ConnectedOverlayScrollHandler,
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
-import {
-  ObjectUtils,
-  OverlayService,
-  PrimeNGConfig,
-  PrimeTemplate,
-  SharedModule,
-  zindexutils
-} from "./chunk-YP3ZOBBB.js";
-import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-5L46MWTK.js";
 import {
   animate,
   animation,
@@ -32,6 +24,14 @@ import {
   DOCUMENT,
   isPlatformBrowser
 } from "./chunk-G6LDYIDB.js";
+import {
+  ObjectUtils,
+  OverlayService,
+  PrimeNGConfig,
+  PrimeTemplate,
+  SharedModule,
+  zindexutils
+} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -971,4 +971,4 @@ export {
   Overlay,
   OverlayModule
 };
-//# sourceMappingURL=chunk-Q5GI75ZS.js.map
+//# sourceMappingURL=chunk-ISWQJIA4.js.map

@@ -21,7 +21,19 @@ export interface CreatePaymentBatchResponse {
   location: string;
 }
 
-export interface PayloadGetBatchStatus {
+
+export interface Params {
+  paginationRequest: PaginationRequest;
+  searchTerm: string;
+  idCliente?: number;
+}
+
+export interface StateOptions {
+  label: string;
+  value: string;
+}
+
+interface PayloadGetBatchStatus {
   batchId: number;
   state: number;
   total: number;
@@ -30,17 +42,6 @@ export interface PayloadGetBatchStatus {
   running: number;
   difference: null;
 }
-
-export interface Params {
-  paginationRequest: PaginationRequest;
-  searchTerm: string;
-  idCliente?: number;
-}
-export interface StateOptions {
-  label: string;
-  value: string;
-}
-
 
 interface PayloadIngresos {
   idIngreso: number;
