@@ -146,8 +146,8 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
       const proveedor = request.listProveedorCliente as unknown as Proveedor['payload'];
       this.createPaymentBatchRequest.entityId = proveedor.provId;
     } else {
-      const cliente = request.listProveedorCliente as Cliente;
-      this.createPaymentBatchRequest.entityId = cliente.payload.idCliente;
+      const cliente = request.listProveedorCliente as unknown as Cliente['payload'];
+      this.createPaymentBatchRequest.entityId = cliente.idCliente;
     }
 
     const items: Items[] = this.facturas.map(i => ({

@@ -1,0 +1,17 @@
+[debug] [2025-10-04T00:20:46.529Z] ----------------------------------------------------------------------
+[debug] [2025-10-04T00:20:46.533Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\desarrollador28\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2025-10-04T00:20:46.533Z] CLI Version:   14.16.0
+[debug] [2025-10-04T00:20:46.533Z] Platform:      win32
+[debug] [2025-10-04T00:20:46.533Z] Node Version:  v22.13.1
+[debug] [2025-10-04T00:20:46.534Z] Time:          Fri Oct 03 2025 18:20:46 GMT-0600 (hora estándar central)
+[debug] [2025-10-04T00:20:46.534Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-04T00:20:46.536Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-10-04T00:20:46.829Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-04T00:20:46.830Z] > authorizing via signed-in user (desarrollador28@dalton.com.mx)
+[debug] [2025-10-04T00:20:46.830Z] [iam] checking project pagolotes-44885 for permissions ["cloudsql.databases.create","cloudsql.databases.update","cloudsql.instances.connect","cloudsql.instances.create","cloudsql.instances.get","cloudsql.instances.list","cloudsql.instances.update","cloudsql.users.create","firebase.projects.get","firebasedataconnect.connectors.create","firebasedataconnect.connectors.delete","firebasedataconnect.connectors.list","firebasedataconnect.connectors.update","firebasedataconnect.operations.get","firebasedataconnect.schemas.create","firebasedataconnect.schemas.delete","firebasedataconnect.schemas.list","firebasedataconnect.schemas.update","firebasedataconnect.services.create","firebasedataconnect.services.delete","firebasedataconnect.services.list","firebasedataconnect.services.update","firebasehosting.sites.update"]
+[debug] [2025-10-04T00:20:46.831Z] Checked if tokens are valid: false, expires at: 1759281291617
+[debug] [2025-10-04T00:20:46.831Z] Checked if tokens are valid: false, expires at: 1759281291617
+[debug] [2025-10-04T00:20:46.831Z] > refreshing access token with scopes: []
+[debug] [2025-10-04T00:20:46.832Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-04T00:20:46.832Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
