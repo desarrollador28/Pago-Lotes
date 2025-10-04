@@ -21,6 +21,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BadgeModule } from 'primeng/badge';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
+import { PaginatorModule } from 'primeng/paginator';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { TagModule } from 'primeng/tag';
     ProgressSpinnerModule,
     BadgeModule,
     ChipModule,
-    TagModule
+    TagModule,
+    PaginatorModule
   ]
 })
 export class PrimeNGModule { }

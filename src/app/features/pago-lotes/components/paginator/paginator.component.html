@@ -1,0 +1,6 @@
+<div class="card flex justify-content-center">
+  <p-paginator [totalRecords]="paginator.response.TotalCount" [rows]="paginator.response.PageSize"
+    [rowsPerPageOptions]="rowsPerPageOptions" [showCurrentPageReport]="true" [showPageLinks]="true"
+    (onPageChange)="pageChange($event)"
+    [showJumpToPageDropdown]="false" currentPageReportTemplate="Mostrando de {first} a {last} de un total de {totalRecords} registros" />
+</div>

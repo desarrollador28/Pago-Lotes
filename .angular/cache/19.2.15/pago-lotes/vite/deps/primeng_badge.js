@@ -2,6 +2,10 @@ import {
   DomHandler
 } from "./chunk-BUGEQH7Q.js";
 import {
+  SharedModule,
+  UniqueComponentId
+} from "./chunk-YP3ZOBBB.js";
+import {
   CommonModule,
   NgClass,
   NgIf,
@@ -10,10 +14,6 @@ import {
 import {
   DOCUMENT
 } from "./chunk-G6LDYIDB.js";
-import {
-  SharedModule,
-  UniqueComponentId
-} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   Component,

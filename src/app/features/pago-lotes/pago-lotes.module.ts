@@ -10,9 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BuscarClienteProveedorPageComponent } from './stepper-one/buscar-cliente-proveedor/pages/buscar-cliente-proveedor-page.component';
 import { DocumentosCobranzaPageComponent } from './stepper-two/documentos-cobranza/page/documentos-cobranza-page.component';
 import { DialogComponent } from './stepper-two/components/dialog/dialog.component';
-import { TablaIngresosBancariosComponent } from './stepper-one/components/tabla/tabla.component';
-import { TablaFacturasComponent } from './stepper-two/components/tabla/tabla-facturas.component';
+import { TablaIngresosBancariosComponent } from './stepper-one/components/tabla/tabla-ingresos-bancarios.component';
+import { TablaFacturasComponent } from './stepper-two/components/tablas/facturas/tabla-facturas.component';
 import { BatchStatusPageComponent } from './stepper-three/pages/batch-status/batch-status-page.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { BatchStatusPageComponent } from './stepper-three/pages/batch-status/bat
     DialogComponent,
     TablaIngresosBancariosComponent,
     TablaFacturasComponent,
-    BatchStatusPageComponent
+    BatchStatusPageComponent,
+    PaginatorComponent
   ],
   imports: [
     CommonModule,

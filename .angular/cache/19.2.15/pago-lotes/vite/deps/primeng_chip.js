@@ -2,6 +2,13 @@ import {
   BaseIcon
 } from "./chunk-KLUC2SLR.js";
 import {
+  PrimeNGConfig,
+  PrimeTemplate,
+  SharedModule,
+  TranslationKeys,
+  UniqueComponentId
+} from "./chunk-YP3ZOBBB.js";
+import {
   CommonModule,
   NgClass,
   NgIf,
@@ -9,13 +16,6 @@ import {
   NgTemplateOutlet
 } from "./chunk-EWCK6T2S.js";
 import "./chunk-G6LDYIDB.js";
-import {
-  PrimeNGConfig,
-  PrimeTemplate,
-  SharedModule,
-  TranslationKeys,
-  UniqueComponentId
-} from "./chunk-YP3ZOBBB.js";
 import {
   ChangeDetectionStrategy,
   Component,

@@ -6,10 +6,7 @@
     *ngIf="dataTable?.payload">
 
 
-    <p-table [columns]="cols" [value]="dataTable!.payload" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true"
-      [lazy]="true" [rows]="paginator.response.PageSize" [totalRecords]="paginator.response.TotalCount"
-      [rowsPerPageOptions]="[5, 10, 15, 20]" (onPage)="pageChange($event)" [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando de {first} a {last} de {totalRecords} registros"
+    <p-table [columns]="cols" [value]="dataTable!.payload" [tableStyle]="{ 'min-width': '50rem' }"
       [loading]="loadingTable" [(selection)]="selectionModel">
 
       <!-- Acciones table -->
@@ -50,6 +47,7 @@
         </tr>
       </ng-template>
     </p-table>
+    <pago-lotes-paginator (onPageEvent)="pageChange($event)" [paginator]="paginator"></pago-lotes-paginator>
 
     <div class="flex justify-content-end gap-2 mt-3" *ngIf="!dataDialog.isCliente">
       <p-button severity="success" label="Aplicar" (onClick)="facturasApply()"

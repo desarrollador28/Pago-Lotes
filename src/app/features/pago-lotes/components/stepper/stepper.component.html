@@ -8,8 +8,8 @@
       <pago-lotes-buscar-cliente-proveedor (isValidSearch)="onValidSearchIngresos($event)"
         (queryParmasIngresos)="eventQueryParamsIngresos($event)"></pago-lotes-buscar-cliente-proveedor>
 
-      <pago-lotes-tabla *ngIf="isValidFilterIngresos" [queryParamsIngresos]="queryParamsIngresos!"
-        (eventSelectIngreso)="eventIsValidSelectedIngreso($event)"></pago-lotes-tabla>
+      <pago-lotes-tabla-ingresos-bancarios *ngIf="isValidFilterIngresos" [queryParamsIngresos]="queryParamsIngresos!"
+        (eventSelectIngreso)="eventIsValidSelectedIngreso($event)"></pago-lotes-tabla-ingresos-bancarios>
 
     </p-accordionTab>
 
