@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchError, debounceTime, finalize, of, Subject, switchMap} from 'rxjs';
+import { catchError, debounceTime, finalize, of, Subject, switchMap } from 'rxjs';
 import { InputNumberInputEvent } from 'primeng/inputnumber';
 import { SessionService } from '../../../../../core/services/pago-lotes/session.service';
 import { BuscarClienteProveedorService } from '../../../../../core/services/pago-lotes/buscar-cliente.service';
-import { Cliente, CreatePaymentBatchRequest, Facturas, Ingreso, Params} from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
+import { Cliente, CreatePaymentBatchRequest, Facturas, Ingreso, Params } from '../../../../../core/services/pago-lotes/interfaces/pago-lotes.interface';
 import { TableDialog } from '../../interfaces/dialog.interface';
 import { CustomColumn } from '../../../interfaces/table.interface';
 import { getValidationMessage, isInvalidField } from '../../../../../shared/helpers/form.helpers';
@@ -76,10 +76,24 @@ export class DocumentosCobranzaPageComponent implements OnInit {
       rfc: [''],
     });
     this.getClienteById$();
+    this.appyPagos();
+  }
 
+  appyPagos(): void {
     this.sessionService.watch('ingresoBancarioSelected').subscribe(ingresoBancarioSelected => {
       const ingresoSelect = ingresoBancarioSelected;
       this.ingresoBancario = JSON.parse(ingresoSelect!);
+
+      if (!ingresoSelect) {
+        this.formDocumentosCobranza.reset();
+        this.ingresoBancario = {
+          idIngreso: 0,
+          importe: 0,
+          fecha: new Date(),
+          referencia: '',
+          saldo: 0
+        }
+      }
     })
   }
 

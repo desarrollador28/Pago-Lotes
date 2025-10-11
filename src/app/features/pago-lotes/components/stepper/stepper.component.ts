@@ -19,6 +19,7 @@ export class StepperComponent implements OnInit {
 
   ngOnInit(): void {
     this.getId();
+    this.applyPagos();
   }
 
 
@@ -33,6 +34,7 @@ export class StepperComponent implements OnInit {
   eventIsValidSelectedIngreso(event: boolean): void {
     this.isValidSelectedIngreso = event;
     this.activeIndex = 1;
+
   }
 
   getId(): void {
@@ -44,6 +46,15 @@ export class StepperComponent implements OnInit {
         this.activeIndex = 2;
       }
     });
+  }
+
+  applyPagos(): void {
+    this.sessionService.watch('objectPaso1').subscribe(paso1 => {
+      if (!paso1) {
+        this.isValidSelectedIngreso = false
+        this.isValidFilterIngresos = false
+      }
+    })
   }
 
 }

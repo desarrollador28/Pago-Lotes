@@ -97,6 +97,8 @@ export class BuscarClienteProveedorPageComponent {
     this.viewPortService.viewportWidth$.subscribe(width => {
       this.isMobile = width < 768;
     });
+
+    this.applyPagos();
   }
 
   private initForm(): void {
@@ -141,7 +143,7 @@ export class BuscarClienteProveedorPageComponent {
   private initClientesOrProveedoresListener(): void {
     this.isCliente$.pipe(
       tap(() => this.loadingDropdownClienteProveedor = true),
-      switchMap(flag => this.buscarClienteService.getClientesProveedores(this.queryParams, flag).pipe(
+      switchMap(flag => this.buscarClienteService.getClientesProveedores(this.queryParams, flag, false).pipe(
         finalize(() => this.loadingDropdownClienteProveedor = false))),
     ).subscribe({
       next: ({ data, pagination }) => {
@@ -205,7 +207,7 @@ export class BuscarClienteProveedorPageComponent {
           this.queryParams.searchTerm = searchTerm;
         }),
         switchMap(
-          () => this.buscarClienteService.getClientesProveedores(this.queryParams, this.isCliente).pipe(
+          () => this.buscarClienteService.getClientesProveedores(this.queryParams, this.isCliente, false).pipe(
             finalize(() => this.loadingDropdownClienteProveedor = false))
         )
       ).subscribe({
@@ -366,6 +368,7 @@ export class BuscarClienteProveedorPageComponent {
   }
 
 
+
   /**
    * Disparar busqueda de ingresos bancarios
    * @return void
@@ -397,5 +400,11 @@ export class BuscarClienteProveedorPageComponent {
     });
     this.isValidSearch.emit(true);
 
+  }
+
+  applyPagos(): void {
+    this.sessionService.watch('objectPaso1').subscribe(session => {
+      if (!session) this.formCliente.reset();
+    })
   }
 }

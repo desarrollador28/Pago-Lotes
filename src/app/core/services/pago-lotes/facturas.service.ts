@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../../enviroments/enviroment';
 import { Clientes, CreatePaymentBatchRequest, CreatePaymentBatchResponse, Facturas, GetBatchStatus, Params } from './interfaces/pago-lotes.interface';
@@ -14,8 +14,11 @@ export class FacturasService {
 
   constructor(private http: HttpClient) { }
 
-  getFacturasFilter(queryParams: Params): Observable<{ data: Facturas, pagination: PaginationResponse }> {
+  getFacturasFilter(queryParams: Params, loadingGlobal: boolean): Observable<{ data: Facturas, pagination: PaginationResponse }> {
 
+    const headers = new HttpHeaders({
+      'X-Spinner': Number(loadingGlobal)
+    });
     let params = new HttpParams()
       .set('searchTerm', queryParams.searchTerm)
       .set('PageSize', queryParams.paginationRequest.pageSize)
@@ -25,7 +28,7 @@ export class FacturasService {
       params = params.set('idCliente', queryParams.idCliente);
     }
 
-    return this.http.get<Facturas>(`${this.baseUrl}/facturas`, { observe: 'response', params }).pipe(
+    return this.http.get<Facturas>(`${this.baseUrl}/facturas`, { observe: 'response', params, headers }).pipe(
       map(response => {
         const paginationHeader = response.headers.get('X-Pagination');
         let pagination = null;

@@ -7,6 +7,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BuscarClienteHeaderInterceptor } from './services/pago-lotes/interceptors/buscar-cliente.interceptor';
 import { BuscarClienteProveedorService } from './services/pago-lotes/buscar-cliente.service';
 import { FacturasService } from './services/pago-lotes/facturas.service';
+import { LoadingService } from './services/loading/loading.service';
+import { LoadingInterceptor } from './services/loading/interceptor/loading.interceptor';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -41,9 +43,15 @@ export function initializeMsal(msalService: MsalService) {
       useClass: BuscarClienteHeaderInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true
+    },
     ViewportService,
     BuscarClienteProveedorService,
-    FacturasService
+    FacturasService,
+    LoadingService
   ]
 })
 export class CoreModule {

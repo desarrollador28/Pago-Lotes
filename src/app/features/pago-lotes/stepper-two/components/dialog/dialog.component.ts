@@ -23,6 +23,7 @@ export class DialogComponent implements OnInit {
   public paginator = new Paginator();
   private isCliente$: Subject<boolean> = new Subject<boolean>;
   private filtro$: Subject<string> = new Subject<string>;
+  private showLoagindGlobal: boolean = false;
   public visible: boolean = false;
   public loadingTable: boolean = false;
   public total: number = 0;
@@ -73,7 +74,7 @@ export class DialogComponent implements OnInit {
    */
   showDialog(): void {
     this.visible = true;
-
+    this.showLoagindGlobal = true;
     this.dataDialog.isCliente
       ? this.isCliente$.next(this.dataDialog.isCliente)
       : this.isCliente$.next(this.dataDialog.isCliente);
@@ -116,11 +117,12 @@ export class DialogComponent implements OnInit {
       (tap(() => {
         this.loadingTable = true
         this.queryParams.paginationRequest = this.paginator.request;
+        this.queryParams.idCliente = this.idCliente;
       })),
       switchMap((flag) =>
-        flag ? this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente).pipe(
+        flag ? this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente, this.showLoagindGlobal).pipe(
           finalize(() => this.loadingTable = false),)
-          : this.facturaService.getFacturasFilter(this.queryParams).pipe(
+          : this.facturaService.getFacturasFilter(this.queryParams, this.showLoagindGlobal).pipe(
             finalize(() => this.loadingTable = false),
           )
       ),
@@ -154,8 +156,8 @@ export class DialogComponent implements OnInit {
         this.facturaService.isFactura(searchFactura).pipe(
           switchMap(flag =>
             flag
-              ? this.facturaService.getFacturasFilter(this.queryParams)
-              : this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente)
+              ? this.facturaService.getFacturasFilter(this.queryParams, false)
+              : this.clienteService.getClientesProveedores(this.queryParams, this.dataDialog.isCliente, false)
           ),
           catchError(err => {
             console.log('Error en búsqueda', err);
@@ -231,7 +233,7 @@ export class DialogComponent implements OnInit {
 
   pageChange(event: TablePageEvent): void {
     this.paginator.update(event);
-
+    this.showLoagindGlobal = false;
     this.dataDialog.isCliente
       ? this.isCliente$.next(this.dataDialog.isCliente)
       : this.isCliente$.next(this.dataDialog.isCliente);

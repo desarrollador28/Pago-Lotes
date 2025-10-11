@@ -174,18 +174,10 @@ export class TablaFacturasComponent implements OnInit, OnChanges {
           confirmButtonText: 'Consultar estado',
         }).then(() => {
           this.sessionService.set('batchID', String(data.id))
+          this.sessionService.remove(['objectPaso1', 'ingresoBancarioSelected']);
+          this.facturas = [];
         });
 
-
-        // Swal.fire({
-        //   title: "<strong>Pago Aplicado</u></strong>",
-        //   icon: "success",
-        //   html: `<a href="${location}" autofocus>URL</a>`,
-        //   showCloseButton: true,
-        //   showCancelButton: true,
-        //   focusConfirm: false,
-        //   confirmButtonText: `Listo`,
-        // });
       },
       error: (err) => {
         console.log('Error en aplicar pagos', err);

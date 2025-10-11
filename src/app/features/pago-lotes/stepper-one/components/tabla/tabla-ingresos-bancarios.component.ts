@@ -19,6 +19,7 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
   @Output() eventSelectIngreso: EventEmitter<boolean> = new EventEmitter<boolean>;
   public paginator = new Paginator();
   private isCuentaCorriente$ = new Subject<boolean>();
+  private showLoagingGlobal: boolean = true;
   public ingresosFilter!: Ingresos;
   public loading: boolean = false;
   public cols!: CustomColumn[];
@@ -49,7 +50,7 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['queryParamsIngresos']) return
     this.ingresoSelectedRadio = null;
-
+    this.showLoagingGlobal = true;
     this.queryParamsIngresos?.idCuentaBancaria
       ? this.isCuentaCorriente$.next(false)
       : this.isCuentaCorriente$.next(true);
@@ -66,10 +67,10 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
     this.isCuentaCorriente$.pipe(
       tap(() => this.loading = true),
       switchMap(flag => flag
-        ? this.buscarClienteProveedorService.GetMovimientoCuentaCorrienteById(this.paginator.request, this.queryParamsIngresos!).pipe(
+        ? this.buscarClienteProveedorService.GetMovimientoCuentaCorrienteById(this.paginator.request, this.queryParamsIngresos!, this.showLoagingGlobal).pipe(
           finalize(() => this.loading = false)
         )
-        : this.buscarClienteProveedorService.getAllIngresos(this.paginator.request, this.queryParamsIngresos!).pipe(
+        : this.buscarClienteProveedorService.getAllIngresos(this.paginator.request, this.queryParamsIngresos!, this.showLoagingGlobal).pipe(
           finalize(() => this.loading = false)
         )
       ),
@@ -96,6 +97,7 @@ export class TablaIngresosBancariosComponent implements OnChanges, OnInit {
   }
 
   pageChange(event: TablePageEvent): void {
+    this.showLoagingGlobal = false;
     this.paginator.update(event);
     this.queryParamsIngresos?.idCuentaBancaria
       ? this.isCuentaCorriente$.next(false)
